@@ -14,10 +14,6 @@ interface HomeTemplateProps {
 export function HomeTemplate({ totalExpense, totalIncome }: HomeTemplateProps) {
   return (
     <div css={wrapperStyle}>
-      <Head>
-        <title>HABook</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
       <Grid container spacing={2}>
         <Grid item xs={6}>
           <TotalExpense expense={totalExpense} />
