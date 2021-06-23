@@ -2,24 +2,24 @@ import { css } from "@emotion/react"
 import { Card, CardContent, Typography } from "@material-ui/core"
 import React from "react"
 
-interface TotalExpenseProps {
-  expense: number
+interface TotalIncomeProps {
+  income: number
 }
 
-export function TotalExpense({ expense }: TotalExpenseProps) {
+export function TotalIncome({ income }: TotalIncomeProps) {
   return (
     <>
       <Card>
         <CardContent css={contentWrapperStyle}>
-          <Typography variant={"h4"}>支出</Typography>
+          <Typography variant={"h4"}>収入</Typography>
           <Typography variant={"h5"}>
-            {expense.toLocaleString("ja-JP", {
+            {income.toLocaleString("ja-JP", {
               style: "currency",
               currency: "JPY",
             })}
           </Typography>
         </CardContent>
-      </Card>
+      </Card>{" "}
     </>
   )
 }

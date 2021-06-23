@@ -1,12 +1,14 @@
 import React from "react"
 import { HomeTemplate } from "src/ui/home/components/HomeTemplate"
-import { HeaderContainer } from "src/ui/navigation/comtainer/HeaderContainer"
 
 export default function Home() {
+  // 仮で置いている値
   const totalExpense = 123456
+  const totalIncome = 123456789
+
   return (
-    <div>
-      <HomeTemplate total={totalExpense} />
-    </div>
+    <>
+      <HomeTemplate totalExpense={totalExpense} totalIncome={totalIncome} />
+    </>
   )
 }
