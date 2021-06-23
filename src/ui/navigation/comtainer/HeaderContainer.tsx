@@ -1,8 +1,15 @@
 import React from "react"
 import { Header } from "../components/Header"
-import { useHeader } from "../hooks/useHeader"
+import { useDrawer } from "../hooks/useDrawer"
 
 export function HeaderContainer() {
-  const { isOpen, onDrawerOpen, onDrawerClose } = useHeader()
-  return <Header open={isOpen} onOpen={onDrawerOpen} onClose={onDrawerClose} />
+  const { openDrawer, onDrawerOpen, onDrawerClose } = useDrawer()
+
+  return (
+    <Header
+      openDrawer={openDrawer}
+      onDrawerOpen={onDrawerOpen}
+      onDrawerClose={onDrawerClose}
+    />
+  )
 }

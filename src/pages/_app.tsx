@@ -4,7 +4,7 @@ import React from "react"
 import { RecoilRoot } from "recoil"
 import { ThemeProvider } from "@material-ui/core"
 import { HeaderContainer } from "../ui/navigation/comtainer/HeaderContainer"
-import theme from "../ui/theme"
+import { theme } from "../ui/theme"
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (

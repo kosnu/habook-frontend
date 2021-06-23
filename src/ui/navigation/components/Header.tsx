@@ -1,43 +1,40 @@
-import React from "react"
-import {
-  AppBar,
-  Drawer,
-  IconButton,
-  Toolbar,
-  Typography,
-} from "@material-ui/core"
+import { AppBar, IconButton, Toolbar } from "@material-ui/core"
 import { Menu as MenuIcon } from "@material-ui/icons"
-import Link from "next/link"
+import React from "react"
+import { AdditionalMenuButtonContainer } from "../comtainer/AdditionalMenuButtonContainer"
+import { AccountMenuButton } from "./AccountMenuButton"
+import { HeaderDrawer } from "./HeaderDrawer"
+import { HeaderTitle } from "./HeaderTitle"
 
 interface HeaderProps {
-  open: boolean
-  onOpen: () => void
-  onClose: () => void
+  openDrawer: boolean
+  onDrawerOpen: () => void
+  onDrawerClose: () => void
 }
 
-export function Header({ open, onOpen, onClose }: HeaderProps) {
+export function Header({
+  openDrawer,
+  onDrawerOpen,
+  onDrawerClose,
+}: HeaderProps) {
   return (
     <>
-      <AppBar position="static" color={"primary"}>
+      <AppBar position="static" color={"default"}>
         <Toolbar>
           <IconButton
             edge="start"
-            color="inherit"
+            color="primary"
             aria-label="menu"
-            onClick={onOpen}
+            onClick={onDrawerOpen}
           >
             <MenuIcon />
           </IconButton>
-          <Link href={"/"}>
-            <Typography variant="h6">
-              <a>HABook</a>
-            </Typography>
-          </Link>
+          <HeaderTitle />
+          <AdditionalMenuButtonContainer />
+          <AccountMenuButton />
         </Toolbar>
       </AppBar>
-      <Drawer anchor={"left"} open={open} onClose={onClose}>
-        ...
-      </Drawer>
+      <HeaderDrawer open={openDrawer} onClose={onDrawerClose} />
     </>
   )
 }
