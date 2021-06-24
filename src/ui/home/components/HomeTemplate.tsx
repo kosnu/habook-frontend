@@ -15,10 +15,10 @@ export function HomeTemplate({ totalExpense, totalIncome }: HomeTemplateProps) {
   return (
     <div css={wrapperStyle}>
       <Grid container spacing={2}>
-        <Grid item xs={6}>
+        <Grid item xs>
           <TotalExpense expense={totalExpense} />
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs>
           <TotalIncome income={totalIncome} />
         </Grid>
       </Grid>
