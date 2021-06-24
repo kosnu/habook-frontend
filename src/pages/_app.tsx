@@ -1,8 +1,10 @@
-import "../../styles/globals.css"
+import DateFnsUtils from "@date-io/date-fns"
+import { ThemeProvider } from "@material-ui/core"
+import { MuiPickersUtilsProvider } from "@material-ui/pickers"
 import type { AppProps } from "next/app"
 import React from "react"
 import { RecoilRoot } from "recoil"
-import { ThemeProvider } from "@material-ui/core"
+import "../../styles/globals.css"
 import { HeaderContainer } from "../ui/navigation/comtainer/HeaderContainer"
 import { theme } from "../ui/theme"
 
@@ -10,8 +12,10 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <RecoilRoot>
       <ThemeProvider theme={theme}>
-        <HeaderContainer />
-        <Component {...pageProps} />
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <HeaderContainer />
+          <Component {...pageProps} />
+        </MuiPickersUtilsProvider>
       </ThemeProvider>
     </RecoilRoot>
   )
