@@ -14,26 +14,21 @@ import {
 } from "@material-ui/core"
 import { Create as CreateIcon } from "@material-ui/icons"
 import { Autocomplete } from "@material-ui/lab"
-import { KeyboardDatePicker } from "@material-ui/pickers"
 import "date-fns"
 import React, { useCallback, useState } from "react"
 import { theme } from "../../../theme"
+import { DatePick } from "./DatePick"
 
 interface NewPaymentTemplateProps {}
 
 export function NewPaymentTemplate({}: NewPaymentTemplateProps) {
   const [category, setCategory] = useState(10)
-  const [date, setDate] = useState<Date | null>(new Date())
   const [amount, setAmount] = useState<number | null>()
   const [num, setNum] = useState<number>(1)
   const [taxIncluded, setTaxIncluded] = useState<number>(1)
 
   const handleCategorySelect = useCallback((event) => {
     setCategory(event.target.value)
-  }, [])
-
-  const handleDateChange = useCallback((date: Date | null) => {
-    setDate(date)
   }, [])
 
   const handleTaxIncludedChange = useCallback((event) => {
@@ -59,17 +54,7 @@ export function NewPaymentTemplate({}: NewPaymentTemplateProps) {
           <Divider variant={"fullWidth"} />
         </Grid>
         <Grid item>
-          <KeyboardDatePicker
-            id="date-picker-dialog"
-            label="支払日"
-            format="yyyy/MM/dd"
-            value={date}
-            onChange={handleDateChange}
-            KeyboardButtonProps={{
-              "aria-label": "change date",
-              color: "primary",
-            }}
-          />
+          <DatePick />
         </Grid>
         <Grid item>
           <FormControl css={wrapperFormStyle}>
