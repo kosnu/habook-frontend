@@ -182,8 +182,8 @@ const wrapperFormStyle = css`
 
 const wrapperProductNameFormStyle = css`
   && {
-    min-width: 400px;
-    width: 400px;
+    min-width: 320px;
+    width: 320px;
   }
 `
 
