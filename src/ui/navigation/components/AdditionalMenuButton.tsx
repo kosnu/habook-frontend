@@ -3,6 +3,7 @@ import {
   Add as AddIcon,
   ArrowDropDown as ArrowDropDownIcon,
 } from "@material-ui/icons"
+import Link from "next/link"
 import React from "react"
 
 interface AdditionalMenuButtonProps {
@@ -38,7 +39,9 @@ export function AdditionalMenuButton({
         open={open}
         onClose={onMenuClose}
       >
-        <MenuItem onClick={() => alert("")}>New Payment</MenuItem>
+        <MenuItem onClick={onMenuClose}>
+          <Link href={"/payments/new"}>支払いの作成</Link>
+        </MenuItem>
         <MenuItem onClick={() => alert("")}>New Category</MenuItem>
       </Menu>
     </>

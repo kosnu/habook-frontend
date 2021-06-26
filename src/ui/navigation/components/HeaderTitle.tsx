@@ -7,7 +7,12 @@ export function HeaderTitle() {
   return (
     <>
       <Link href={"/"}>
-        <Grid container spacing={1} justify={"flex-start"}>
+        <Grid
+          container
+          spacing={1}
+          justify={"flex-start"}
+          style={{ cursor: "pointer" }}
+        >
           <Grid item xs={false}>
             <LogoIcon width={35} height={30} />
           </Grid>
