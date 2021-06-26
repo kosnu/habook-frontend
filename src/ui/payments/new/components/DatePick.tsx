@@ -3,7 +3,7 @@ import React from "react"
 import { useDate } from "../hooks/useDate"
 
 export function DatePick() {
-  const { date, handleDateChange } = useDate()
+  const { date, onDateChange } = useDate()
 
   return (
     <>
@@ -12,7 +12,7 @@ export function DatePick() {
         label="支払日"
         format="yyyy/MM/dd"
         value={date}
-        onChange={handleDateChange}
+        onChange={onDateChange}
         KeyboardButtonProps={{
           "aria-label": "change date",
           color: "primary",

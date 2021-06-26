@@ -7,24 +7,24 @@ import { useProductName } from "../hooks/useProductName"
 import { Category } from "./CategorySelect"
 
 export function ProductNameAutocomplete() {
-  const { productName, handleProductNameChange } = useProductName()
-  const { handleCategoryChange } = useCategory()
+  const { productName, onProductNameChange } = useProductName()
+  const { onCategoryChange } = useCategory()
 
   const handleInputChange = useCallback(
     (_, value) => {
-      handleProductNameChange(value)
+      onProductNameChange(value)
     },
-    [handleProductNameChange],
+    [onProductNameChange],
   )
 
   const handleChange = useCallback(
     (_, value, reason) => {
       if (reason === "select-option") {
         const product = products.filter((product) => product.name === value)[0]
-        handleCategoryChange(product.category.id)
+        onCategoryChange(product.category.id)
       }
     },
-    [handleCategoryChange],
+    [onCategoryChange],
   )
 
   return (

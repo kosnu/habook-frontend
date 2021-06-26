@@ -4,13 +4,13 @@ import React, { useCallback } from "react"
 import { useCategory } from "../hooks/useCategory"
 
 export function CategorySelect() {
-  const { category, handleCategoryChange } = useCategory()
+  const { category, onCategoryChange } = useCategory()
 
   const handleChange = useCallback(
     (event) => {
-      handleCategoryChange(event.target.value)
+      onCategoryChange(event.target.value)
     },
-    [handleCategoryChange],
+    [onCategoryChange],
   )
 
   return (

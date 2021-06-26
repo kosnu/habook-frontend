@@ -9,12 +9,12 @@ const productNameState = atom<string>({
 export function useProductName() {
   const [productName, setProductName] = useRecoilState(productNameState)
 
-  const handleProductNameChange = useCallback(
+  const onProductNameChange = useCallback(
     (value: string) => {
       setProductName(value)
     },
     [setProductName],
   )
 
-  return { productName, handleProductNameChange }
+  return { productName, onProductNameChange }
 }

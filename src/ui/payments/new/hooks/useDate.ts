@@ -9,12 +9,12 @@ const paymentDatePickState = atom<Date | null>({
 export function useDate() {
   const [date, setDate] = useRecoilState(paymentDatePickState)
 
-  const handleDateChange = useCallback(
+  const onDateChange = useCallback(
     (date: Date | null) => {
       setDate(date)
     },
     [setDate],
   )
 
-  return { date, handleDateChange }
+  return { date, onDateChange }
 }
