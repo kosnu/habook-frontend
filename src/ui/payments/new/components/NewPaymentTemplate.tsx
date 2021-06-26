@@ -13,12 +13,12 @@ import {
   Typography,
 } from "@material-ui/core"
 import { Create as CreateIcon } from "@material-ui/icons"
-import { Autocomplete } from "@material-ui/lab"
 import "date-fns"
 import React, { useCallback, useState } from "react"
 import { theme } from "../../../theme"
 import { CategorySelect } from "./CategorySelect"
 import { DatePick } from "./DatePick"
+import { ProductNameAutocomplete } from "./ProductNameAutocomplete"
 
 interface NewPaymentTemplateProps {}
 
@@ -56,15 +56,7 @@ export function NewPaymentTemplate({}: NewPaymentTemplateProps) {
           <CategorySelect />
         </Grid>
         <Grid item>
-          <Autocomplete
-            id="combo-box-demo"
-            options={payments}
-            getOptionLabel={(option) => option.name}
-            css={wrapperProductNameFormStyle}
-            renderInput={(params) => (
-              <TextField {...params} label="商品名" variant="standard" />
-            )}
-          />
+          <ProductNameAutocomplete />
         </Grid>
         <Grid item>
           <Grid container spacing={2} direction={"row"}>
@@ -147,25 +139,3 @@ const wrapperFormStyle = css`
     width: 200px;
   }
 `
-
-const wrapperProductNameFormStyle = css`
-  && {
-    min-width: 320px;
-    width: 320px;
-  }
-`
-
-// 仮で定義している値
-const payments = [
-  { id: 1, name: "りんご", amount: 220, fee: true, num: 1 },
-  { id: 2, name: "バナナ", amount: 100, fee: true, num: 1 },
-  { id: 3, name: "納豆", amount: 120, fee: true, num: 1 },
-  { id: 4, name: "豚バラ肉", amount: 693, fee: true, num: 1 },
-  {
-    id: 5,
-    name: "レノア 超消臭+ 抗菌ビーズ リフレッシュフローラル 詰め替え 約1.8倍",
-    amount: 540,
-    fee: true,
-    num: 1,
-  },
-]
