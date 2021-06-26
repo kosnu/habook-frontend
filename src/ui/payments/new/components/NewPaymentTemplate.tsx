@@ -17,19 +17,15 @@ import { Autocomplete } from "@material-ui/lab"
 import "date-fns"
 import React, { useCallback, useState } from "react"
 import { theme } from "../../../theme"
+import { CategorySelect } from "./CategorySelect"
 import { DatePick } from "./DatePick"
 
 interface NewPaymentTemplateProps {}
 
 export function NewPaymentTemplate({}: NewPaymentTemplateProps) {
-  const [category, setCategory] = useState(10)
   const [amount, setAmount] = useState<number | null>()
   const [num, setNum] = useState<number>(1)
   const [taxIncluded, setTaxIncluded] = useState<number>(1)
-
-  const handleCategorySelect = useCallback((event) => {
-    setCategory(event.target.value)
-  }, [])
 
   const handleTaxIncludedChange = useCallback((event) => {
     setTaxIncluded(event.target.value)
@@ -57,20 +53,7 @@ export function NewPaymentTemplate({}: NewPaymentTemplateProps) {
           <DatePick />
         </Grid>
         <Grid item>
-          <FormControl css={wrapperFormStyle}>
-            <InputLabel id="category-select-label">カテゴリー</InputLabel>
-            <Select
-              labelId="category-select-label"
-              id="category-select"
-              value={category}
-              onChange={handleCategorySelect}
-            >
-              <MenuItem value={10}>食費</MenuItem>
-              <MenuItem value={20}>日用品</MenuItem>
-              <MenuItem value={30}>娯楽</MenuItem>
-              <MenuItem value={40}>交通費</MenuItem>
-            </Select>
-          </FormControl>
+          <CategorySelect />
         </Grid>
         <Grid item>
           <Autocomplete
