@@ -10,8 +10,8 @@ export function useCategory() {
   const [category, setCategory] = useRecoilState(paymentCategoryState)
 
   const handleCategoryChange = useCallback(
-    (event) => {
-      setCategory(event.target.value)
+    (categoryId) => {
+      setCategory(categoryId)
     },
     [setCategory],
   )

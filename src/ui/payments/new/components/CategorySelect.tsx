@@ -1,10 +1,17 @@
 import { css } from "@emotion/react"
 import { FormControl, InputLabel, MenuItem, Select } from "@material-ui/core"
-import React from "react"
+import React, { useCallback } from "react"
 import { useCategory } from "../hooks/useCategory"
 
 export function CategorySelect() {
   const { category, handleCategoryChange } = useCategory()
+
+  const handleChange = useCallback(
+    (event) => {
+      handleCategoryChange(event.target.value)
+    },
+    [handleCategoryChange],
+  )
 
   return (
     <>
@@ -14,7 +21,7 @@ export function CategorySelect() {
           labelId="category-select-label"
           id="category-select"
           value={category}
-          onChange={handleCategoryChange}
+          onChange={handleChange}
         >
           {categories.map((category, index) => {
             return (
@@ -37,7 +44,7 @@ const wrapperStyle = css`
 `
 
 // TODO: サーバーから取得するようにする
-interface Category {
+export interface Category {
   id: number
   name: string
 }
