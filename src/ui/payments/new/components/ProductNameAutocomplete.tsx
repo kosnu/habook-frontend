@@ -2,13 +2,13 @@ import { css } from "@emotion/react"
 import { TextField } from "@material-ui/core"
 import { Autocomplete } from "@material-ui/lab"
 import React, { useCallback } from "react"
-import { useCategory } from "../hooks/useCategory"
+import { useCategories } from "../hooks/useCategories"
 import { useProductName } from "../hooks/useProductName"
 import { Category } from "./CategorySelect"
 
 export function ProductNameAutocomplete() {
   const { productName, onProductNameChange } = useProductName()
-  const { onCategoryChange } = useCategory()
+  const { onCategoryChange } = useCategories()
 
   const handleInputChange = useCallback(
     (_, value) => {

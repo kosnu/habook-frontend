@@ -6,7 +6,7 @@ const paymentCategoryState = atom<number>({
   default: 1,
 })
 
-export function useCategory() {
+export function useCategories() {
   const [category, setCategory] = useRecoilState(paymentCategoryState)
 
   const onCategoryChange = useCallback(

@@ -1,10 +1,10 @@
 import { css } from "@emotion/react"
 import { FormControl, InputLabel, MenuItem, Select } from "@material-ui/core"
 import React, { useCallback } from "react"
-import { useCategory } from "../hooks/useCategory"
+import { useCategories } from "../hooks/useCategories"
 
 export function CategorySelect() {
-  const { category, onCategoryChange } = useCategory()
+  const { category, onCategoryChange } = useCategories()
 
   const handleChange = useCallback(
     (event) => {

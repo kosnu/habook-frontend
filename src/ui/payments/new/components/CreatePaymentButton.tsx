@@ -3,13 +3,13 @@ import { Create as CreateIcon } from "@material-ui/icons"
 import React, { useCallback } from "react"
 import { useWarningSnackbar } from "../../../common/WarningSnackBar"
 import { useAmount } from "../hooks/useAmount"
-import { useCategory } from "../hooks/useCategory"
+import { useCategories } from "../hooks/useCategories"
 import { useDate } from "../hooks/useDate"
 import { useProductName } from "../hooks/useProductName"
 
 export function CreatePaymentButton() {
   const { date } = useDate()
-  const { category } = useCategory()
+  const { category } = useCategories()
   const { productName } = useProductName()
   const { amount, taxIncluded, numberOfProduct } = useAmount()
   const { openWarningSnackbar } = useWarningSnackbar()
