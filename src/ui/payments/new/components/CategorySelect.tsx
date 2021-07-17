@@ -4,7 +4,7 @@ import React, { useCallback } from "react"
 import { useCategories } from "../hooks/useCategories"
 
 export function CategorySelect() {
-  const { category, onCategoryChange } = useCategories()
+  const { category, categories, onCategoryChange } = useCategories()
 
   const handleChange = useCallback(
     (event) => {
@@ -44,20 +44,20 @@ const wrapperStyle = css`
 `
 
 // TODO: サーバーから取得するようにする
-export interface Category {
-  id: number
-  name: string
-}
+// export interface Category {
+//   id: number
+//   name: string
+// }
 
-const categories: ReadonlyArray<Category> = [
-  { id: 1, name: "食費" },
-  { id: 2, name: "外食" },
-  { id: 3, name: "日用品" },
-  { id: 4, name: "娯楽" },
-  { id: 5, name: "交際費" },
-  { id: 6, name: "美容" },
-  { id: 7, name: "ファッション" },
-  { id: 8, name: "交通費" },
-  { id: 9, name: "固定費" },
-  { id: 10, name: "その他" },
-]
+// const categories: ReadonlyArray<Category> = [
+//   { id: 1, name: "食費" },
+//   { id: 2, name: "外食" },
+//   { id: 3, name: "日用品" },
+//   { id: 4, name: "娯楽" },
+//   { id: 5, name: "交際費" },
+//   { id: 6, name: "美容" },
+//   { id: 7, name: "ファッション" },
+//   { id: 8, name: "交通費" },
+//   { id: 9, name: "固定費" },
+//   { id: 10, name: "その他" },
+// ]
