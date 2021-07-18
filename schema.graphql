@@ -1,0 +1,129 @@
+# This file was generated based on ".graphqlconfig". Do not edit manually.
+
+schema {
+    query: Query
+    mutation: Mutation
+}
+
+type Category {
+    createdAt: String!
+    enable: Boolean!
+    id: ID!
+    name: String!
+    updatedAt: String!
+    user: User!
+}
+
+type ExpenseHistory {
+    createdAt: String!
+    expense: Int!
+    id: ID!
+    updatedAt: String!
+    user: User!
+}
+
+type IncomeHistory {
+    createdAt: String!
+    id: ID!
+    income: Int!
+    updatedAt: String!
+    user: User!
+}
+
+type Mutation {
+    createCategory(input: NewCategory!): Category!
+    createExpenseHistory(input: NewExpenseHistory!): ExpenseHistory!
+    createIncomeHistory(input: NewIncomeHistory!): IncomeHistory!
+    createPayment(input: NewPayment!): Payment!
+    createUser(input: NewUser!): User!
+}
+
+type Payment {
+    amount: Int!
+    category: Category!
+    createdAt: String!
+    id: ID!
+    numberOfProduct: Int!
+    paidOn: String!
+    product: Product!
+    taxIncluded: Boolean!
+    updatedAt: String!
+    user: User!
+}
+
+type Product {
+    createdAt: String!
+    id: ID!
+    name: String!
+    updatedAt: String!
+}
+
+type Query {
+    categories(input: SearchCategories): [Category!]!
+    category(id: ID!): Category
+    expenseHistories: [ExpenseHistory!]!
+    expenseHistory(id: ID!): ExpenseHistory
+    incomeHistories(input: SearchIncomeHistory): [IncomeHistory!]!
+    incomeHistory(id: ID!): IncomeHistory
+    payment(id: ID!): Payment
+    payments(input: SearchPayments): [Payment!]!
+    product(id: ID!): Product
+    products: [Product!]!
+    user(id: ID!): User
+    users: [User!]!
+}
+
+type User {
+    createdAt: String!
+    enable: Boolean!
+    id: ID!
+    name: String!
+    updatedAt: String!
+}
+
+input NewCategory {
+    name: String!
+    userId: String!
+}
+
+input NewExpenseHistory {
+    expense: Int!
+    userId: String!
+}
+
+input NewIncomeHistory {
+    income: Int!
+    userId: String!
+}
+
+input NewPayment {
+    amount: Int!
+    categoryId: String!
+    numberOfProduct: Int!
+    paidOn: String!
+    productName: String!
+    taxIncluded: Boolean!
+    userId: String!
+}
+
+input NewUser {
+    name: String!
+}
+
+input SearchCategories {
+    enable: Boolean
+    name: String
+    userId: ID!
+}
+
+input SearchIncomeHistory {
+    beginningOfPeriod: String
+    endOfPeriod: String
+    userId: String!
+}
+
+input SearchPayments {
+    categoryId: String
+    productName: String
+    userId: String!
+}

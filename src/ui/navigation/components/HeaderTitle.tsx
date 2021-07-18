@@ -10,7 +10,7 @@ export function HeaderTitle() {
         <Grid
           container
           spacing={1}
-          justify={"flex-start"}
+          justifyContent={"flex-start"}
           style={{ cursor: "pointer" }}
         >
           <Grid item xs={false}>
