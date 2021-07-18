@@ -6,6 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "codegen": "graphql-codegen --config codegen.yml",
     "format": "prettier --write '{**/*,*}.{js,ts,jsx,tsx}'"
   },
   "dependencies": {
@@ -28,6 +29,10 @@
   "devDependencies": {
     "@emotion/babel-plugin": "11.3.0",
     "@graphql-codegen/cli": "1.21.7",
+    "@graphql-codegen/typescript": "1.23.0",
+    "@graphql-codegen/typescript-graphql-request": "3.2.5",
+    "@graphql-codegen/typescript-operations": "1.18.4",
+    "@graphql-codegen/typescript-react-apollo": "2.3.1",
     "@types/react": "17.0.14",
     "@typescript-eslint/eslint-plugin": "4.28.3",
     "@typescript-eslint/parser": "4.28.3",
