@@ -1,0 +1,6 @@
+query categories($userId: ID!, $enable: Boolean) {
+    categories(input: {userId: $userId, enable: $enable}) {
+        id
+        name
+    }
+}
