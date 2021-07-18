@@ -1,9 +1,9 @@
 import { useCallback } from "react"
 import { atom, useRecoilState } from "recoil"
 
-const paymentAmountState = atom<number | null>({
+const paymentAmountState = atom<number>({
   key: "payment-amount-state",
-  default: null,
+  default: 0,
 })
 const paymentTaxIncludedState = atom<number>({
   key: "payment-tax-included-state",
