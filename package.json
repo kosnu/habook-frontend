@@ -27,6 +27,7 @@
   },
   "devDependencies": {
     "@emotion/babel-plugin": "11.3.0",
+    "@graphql-codegen/cli": "1.21.7",
     "@types/react": "17.0.14",
     "@typescript-eslint/eslint-plugin": "4.28.3",
     "@typescript-eslint/parser": "4.28.3",
