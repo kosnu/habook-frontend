@@ -1,0 +1,11 @@
+query payments($userId: ID!, $productName: String) {
+    payments(input: {userId: $userId, productName: $productName}) {
+        category {
+            id
+            name
+        }
+        product {
+            name
+        }
+    }
+}
