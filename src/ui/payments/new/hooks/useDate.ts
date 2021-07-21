@@ -1,7 +1,7 @@
 import { useCallback } from "react"
 import { atom, useRecoilState } from "recoil"
 
-const paymentDatePickState = atom<Date | null>({
+const paymentDatePickState = atom<Date>({
   key: "payment-date-pick-state",
   default: new Date(),
 })
@@ -11,7 +11,7 @@ export function useDate() {
 
   const onDateChange = useCallback(
     (date: Date | null) => {
-      setDate(date)
+      date && setDate(date)
     },
     [setDate],
   )
