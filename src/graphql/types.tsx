@@ -21,47 +21,47 @@ export type Scalars = {
 
 export type Category = {
   __typename?: "Category"
+  createdAt: Scalars["String"]
+  enable: Scalars["Boolean"]
   id: Scalars["ID"]
   name: Scalars["String"]
-  enable: Scalars["Boolean"]
-  user: User
-  createdAt: Scalars["String"]
   updatedAt: Scalars["String"]
+  user: User
 }
 
 export type ExpenseHistory = {
   __typename?: "ExpenseHistory"
-  id: Scalars["ID"]
-  expense: Scalars["Int"]
-  user: User
   createdAt: Scalars["String"]
+  expense: Scalars["Int"]
+  id: Scalars["ID"]
   updatedAt: Scalars["String"]
+  user: User
 }
 
 export type IncomeHistory = {
   __typename?: "IncomeHistory"
+  createdAt: Scalars["String"]
   id: Scalars["ID"]
   income: Scalars["Int"]
-  user: User
-  createdAt: Scalars["String"]
   updatedAt: Scalars["String"]
+  user: User
 }
 
 export type Mutation = {
   __typename?: "Mutation"
-  createExpenseHistory: ExpenseHistory
   createCategory: Category
+  createExpenseHistory: ExpenseHistory
   createIncomeHistory: IncomeHistory
   createPayment: Payment
   createUser: User
 }
 
-export type MutationCreateExpenseHistoryArgs = {
-  input: NewExpenseHistory
-}
-
 export type MutationCreateCategoryArgs = {
   input: NewCategory
+}
+
+export type MutationCreateExpenseHistoryArgs = {
+  input: NewExpenseHistory
 }
 
 export type MutationCreateIncomeHistoryArgs = {
@@ -78,27 +78,27 @@ export type MutationCreateUserArgs = {
 
 export type NewCategory = {
   name: Scalars["String"]
-  userId: Scalars["String"]
+  userId: Scalars["ID"]
 }
 
 export type NewExpenseHistory = {
   expense: Scalars["Int"]
-  userId: Scalars["String"]
+  userId: Scalars["ID"]
 }
 
 export type NewIncomeHistory = {
   income: Scalars["Int"]
-  userId: Scalars["String"]
+  userId: Scalars["ID"]
 }
 
 export type NewPayment = {
-  taxIncluded: Scalars["Boolean"]
-  paidOn: Scalars["String"]
-  numberOfProduct: Scalars["Int"]
   amount: Scalars["Int"]
+  categoryId: Scalars["ID"]
+  numberOfProduct: Scalars["Int"]
+  paidOn: Scalars["String"]
   productName: Scalars["String"]
-  categoryId: Scalars["String"]
-  userId: Scalars["String"]
+  taxIncluded: Scalars["Boolean"]
+  userId: Scalars["ID"]
 }
 
 export type NewUser = {
@@ -107,34 +107,34 @@ export type NewUser = {
 
 export type Payment = {
   __typename?: "Payment"
-  id: Scalars["ID"]
-  taxIncluded: Scalars["Boolean"]
-  paidOn: Scalars["String"]
-  numberOfProduct: Scalars["Int"]
   amount: Scalars["Int"]
-  product: Product
   category: Category
-  user: User
   createdAt: Scalars["String"]
+  id: Scalars["ID"]
+  numberOfProduct: Scalars["Int"]
+  paidOn: Scalars["String"]
+  product: Product
+  taxIncluded: Scalars["Boolean"]
   updatedAt: Scalars["String"]
+  user: User
 }
 
 export type Product = {
   __typename?: "Product"
+  createdAt: Scalars["String"]
   id: Scalars["ID"]
   name: Scalars["String"]
-  createdAt: Scalars["String"]
   updatedAt: Scalars["String"]
 }
 
 export type Query = {
   __typename?: "Query"
-  expenseHistory?: Maybe<ExpenseHistory>
-  expenseHistories: Array<ExpenseHistory>
-  category?: Maybe<Category>
   categories: Array<Category>
-  incomeHistory?: Maybe<IncomeHistory>
+  category?: Maybe<Category>
+  expenseHistories: Array<ExpenseHistory>
+  expenseHistory?: Maybe<ExpenseHistory>
   incomeHistories: Array<IncomeHistory>
+  incomeHistory?: Maybe<IncomeHistory>
   payment?: Maybe<Payment>
   payments: Array<Payment>
   product?: Maybe<Product>
@@ -143,24 +143,24 @@ export type Query = {
   users: Array<User>
 }
 
-export type QueryExpenseHistoryArgs = {
-  id: Scalars["ID"]
+export type QueryCategoriesArgs = {
+  input?: Maybe<SearchCategories>
 }
 
 export type QueryCategoryArgs = {
   id: Scalars["ID"]
 }
 
-export type QueryCategoriesArgs = {
-  input?: Maybe<SearchCategories>
-}
-
-export type QueryIncomeHistoryArgs = {
+export type QueryExpenseHistoryArgs = {
   id: Scalars["ID"]
 }
 
 export type QueryIncomeHistoriesArgs = {
   input?: Maybe<SearchIncomeHistory>
+}
+
+export type QueryIncomeHistoryArgs = {
+  id: Scalars["ID"]
 }
 
 export type QueryPaymentArgs = {
@@ -180,29 +180,29 @@ export type QueryUserArgs = {
 }
 
 export type SearchCategories = {
-  name?: Maybe<Scalars["String"]>
   enable?: Maybe<Scalars["Boolean"]>
+  name?: Maybe<Scalars["String"]>
   userId: Scalars["ID"]
 }
 
 export type SearchIncomeHistory = {
-  userId: Scalars["String"]
   beginningOfPeriod?: Maybe<Scalars["String"]>
   endOfPeriod?: Maybe<Scalars["String"]>
+  userId: Scalars["ID"]
 }
 
 export type SearchPayments = {
-  userId: Scalars["String"]
+  categoryId?: Maybe<Scalars["ID"]>
   productName?: Maybe<Scalars["String"]>
-  categoryId?: Maybe<Scalars["String"]>
+  userId: Scalars["ID"]
 }
 
 export type User = {
   __typename?: "User"
+  createdAt: Scalars["String"]
+  enable: Scalars["Boolean"]
   id: Scalars["ID"]
   name: Scalars["String"]
-  enable: Scalars["Boolean"]
-  createdAt: Scalars["String"]
   updatedAt: Scalars["String"]
 }
 
