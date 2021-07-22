@@ -7,18 +7,18 @@ const paymentCategoryState = atom<string>({
 })
 
 interface ReturnType {
-  category: string
-  onCategoryChange: (categoryId: string) => void
+  categoryId: string
+  onCategoryIdChange: (categoryId: string) => void
 }
 
 export function useCategories(): ReturnType {
-  const [category, setCategory] = useRecoilState(paymentCategoryState)
-  const onCategoryChange = useCallback(
+  const [categoryId, setCategory] = useRecoilState(paymentCategoryState)
+  const onCategoryIdChange = useCallback(
     (categoryId) => {
       setCategory(categoryId)
     },
     [setCategory],
   )
 
-  return { category, onCategoryChange }
+  return { categoryId: categoryId, onCategoryIdChange: onCategoryIdChange }
 }

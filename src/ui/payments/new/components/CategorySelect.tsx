@@ -7,7 +7,7 @@ import { useCategories } from "../hooks/useCategories"
 
 export function CategorySelect() {
   const { userId } = useLoginUser()
-  const { category, onCategoryChange } = useCategories()
+  const { categoryId, onCategoryIdChange } = useCategories()
   const { data } = useCategoriesQuery({
     variables: { userId: userId, enable: true },
   })
@@ -16,9 +16,9 @@ export function CategorySelect() {
 
   const handleChange = useCallback(
     (event) => {
-      onCategoryChange(event.target.value)
+      onCategoryIdChange(event.target.value)
     },
-    [onCategoryChange],
+    [onCategoryIdChange],
   )
 
   return (
@@ -28,7 +28,7 @@ export function CategorySelect() {
         <Select
           labelId="category-select-label"
           id="category-select"
-          value={category}
+          value={categoryId}
           onChange={handleChange}
         >
           {categories.map((category, index) => {
