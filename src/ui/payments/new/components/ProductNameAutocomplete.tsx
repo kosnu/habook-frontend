@@ -1,5 +1,5 @@
 import { css } from "@emotion/react"
-import { CircularProgress, TextField } from "@material-ui/core"
+import { TextField } from "@material-ui/core"
 import { Autocomplete } from "@material-ui/lab"
 import React, { useCallback } from "react"
 import { useProductsQuery } from "../../../../graphql/types"
@@ -31,20 +31,7 @@ export function ProductNameAutocomplete() {
         css={wrapperProductNameFormStyle}
         loading={loading}
         renderInput={(params) => (
-          <TextField
-            {...params}
-            label="商品名"
-            variant="standard"
-            inputProps={{
-              ...params.InputProps,
-              endAdornment: (
-                <>
-                  {loading && <CircularProgress />}
-                  {params.InputProps.endAdornment}
-                </>
-              ),
-            }}
-          />
+          <TextField {...params} label="商品名" variant="standard" />
         )}
         inputValue={productName}
         onInputChange={handleInputChange}
