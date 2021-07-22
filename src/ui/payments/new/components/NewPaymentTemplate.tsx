@@ -8,17 +8,17 @@ import { useLoginUser } from "../../../common/hooks/useLoginUser"
 import { theme } from "../../../theme"
 import { useAmount } from "../hooks/useAmount"
 import { useCategories } from "../hooks/useCategories"
-import { useDate } from "../hooks/useDate"
+import { usePaidOnDate } from "../hooks/usePaidOnDate"
 import { useProductName } from "../hooks/useProductName"
 import { AmountInput } from "./AmountInput"
 import { CategorySelect } from "./CategorySelect"
 import { CreatePaymentButton } from "./CreatePaymentButton"
-import { DatePick } from "./DatePick"
+import { PaidOnDate } from "./PaidOnDate"
 import { ProductNameAutocomplete } from "./ProductNameAutocomplete"
 
 export function NewPaymentTemplate() {
   const { userId } = useLoginUser()
-  const { date } = useDate()
+  const { paidOnDate } = usePaidOnDate()
   const { categoryId } = useCategories()
   const { productName } = useProductName()
   const { amount, taxIncluded, numberOfProduct } = useAmount()
@@ -34,7 +34,7 @@ export function NewPaymentTemplate() {
       variables: {
         userId: userId,
         categoryId: categoryId,
-        paidOn: date.toLocaleString(),
+        paidOn: paidOnDate.toLocaleString(),
         taxIncluded: Boolean(taxIncluded),
         numberOfProduct: numberOfProduct,
         amount: amount,
@@ -42,7 +42,7 @@ export function NewPaymentTemplate() {
       },
     })
   }, [
-    date,
+    paidOnDate,
     categoryId,
     productName,
     amount,
@@ -62,7 +62,7 @@ export function NewPaymentTemplate() {
             <Divider variant={"fullWidth"} />
           </Grid>
           <Grid item>
-            <DatePick />
+            <PaidOnDate />
           </Grid>
           <Grid item>
             <CategorySelect />

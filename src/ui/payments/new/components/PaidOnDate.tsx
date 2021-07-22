@@ -1,9 +1,9 @@
 import { KeyboardDatePicker } from "@material-ui/pickers"
 import React from "react"
-import { useDate } from "../hooks/useDate"
+import { usePaidOnDate } from "../hooks/usePaidOnDate"
 
-export function DatePick() {
-  const { date, onDateChange } = useDate()
+export function PaidOnDate() {
+  const { paidOnDate, onDateChange } = usePaidOnDate()
 
   return (
     <>
@@ -11,7 +11,7 @@ export function DatePick() {
         id="date-picker-dialog"
         label="支払日"
         format="yyyy/MM/dd"
-        value={date}
+        value={paidOnDate}
         onChange={onDateChange}
         KeyboardButtonProps={{
           "aria-label": "change date",
