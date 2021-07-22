@@ -2,8 +2,9 @@ import { css } from "@emotion/react"
 import { Container, Divider, Grid, Typography } from "@material-ui/core"
 import React, { useCallback } from "react"
 import { useCreatePaymentMutation } from "../../../../graphql/types"
+import { LoadingCircular } from "../../../common/components/LoadingCircular"
+import { useWarningSnackbar } from "../../../common/components/WarningSnackBar"
 import { useLoginUser } from "../../../common/hooks/useLoginUser"
-import { useWarningSnackbar } from "../../../common/WarningSnackBar"
 import { theme } from "../../../theme"
 import { useAmount } from "../hooks/useAmount"
 import { useCategories } from "../hooks/useCategories"
@@ -15,15 +16,13 @@ import { CreatePaymentButton } from "./CreatePaymentButton"
 import { DatePick } from "./DatePick"
 import { ProductNameAutocomplete } from "./ProductNameAutocomplete"
 
-interface NewPaymentTemplateProps {}
-
-export function NewPaymentTemplate({}: NewPaymentTemplateProps) {
+export function NewPaymentTemplate() {
+  const { userId } = useLoginUser()
   const { date } = useDate()
-  const { category } = useCategories()
+  const { categoryId } = useCategories()
   const { productName } = useProductName()
   const { amount, taxIncluded, numberOfProduct } = useAmount()
   const { openWarningSnackbar } = useWarningSnackbar()
-  const { userId } = useLoginUser()
   const [createPayment, { loading }] = useCreatePaymentMutation()
 
   const handleSubmitButtonClick = useCallback(async () => {
@@ -34,9 +33,9 @@ export function NewPaymentTemplate({}: NewPaymentTemplateProps) {
     await createPayment({
       variables: {
         userId: userId,
-        categoryId: category,
+        categoryId: categoryId,
         paidOn: date.toLocaleString(),
-        taxIncluded: !!taxIncluded,
+        taxIncluded: Boolean(taxIncluded),
         numberOfProduct: numberOfProduct,
         amount: amount,
         productName: productName,
@@ -44,7 +43,7 @@ export function NewPaymentTemplate({}: NewPaymentTemplateProps) {
     })
   }, [
     date,
-    category,
+    categoryId,
     productName,
     amount,
     taxIncluded,
@@ -55,32 +54,35 @@ export function NewPaymentTemplate({}: NewPaymentTemplateProps) {
   ])
 
   return (
-    <Container css={wrapperStyle} maxWidth={"md"}>
-      <Grid container spacing={4} direction={"column"}>
-        <Grid item>
-          <Typography variant={"h5"}>新しい支払いの作成</Typography>
-          <Divider variant={"fullWidth"} />
+    <>
+      <Container css={wrapperStyle} maxWidth={"md"}>
+        <Grid container spacing={4} direction={"column"}>
+          <Grid item>
+            <Typography variant={"h5"}>新しい支払いの作成</Typography>
+            <Divider variant={"fullWidth"} />
+          </Grid>
+          <Grid item>
+            <DatePick />
+          </Grid>
+          <Grid item>
+            <CategorySelect />
+          </Grid>
+          <Grid item>
+            <ProductNameAutocomplete />
+          </Grid>
+          <Grid item>
+            <AmountInput />
+          </Grid>
+          <Grid item>
+            <Divider variant={"fullWidth"} />
+          </Grid>
+          <Grid item>
+            <CreatePaymentButton onClick={handleSubmitButtonClick} />
+          </Grid>
         </Grid>
-        <Grid item>
-          <DatePick />
-        </Grid>
-        <Grid item>
-          <CategorySelect />
-        </Grid>
-        <Grid item>
-          <ProductNameAutocomplete />
-        </Grid>
-        <Grid item>
-          <AmountInput />
-        </Grid>
-        <Grid item>
-          <Divider variant={"fullWidth"} />
-        </Grid>
-        <Grid item>
-          <CreatePaymentButton onClick={handleSubmitButtonClick} />
-        </Grid>
-      </Grid>
-    </Container>
+      </Container>
+      <LoadingCircular loading={loading} />
+    </>
   )
 }
 
