@@ -3,7 +3,14 @@ import { Container, Divider, Grid, Typography } from "@material-ui/core"
 import React, { useCallback } from "react"
 import { useCreatePaymentMutation } from "../../../../graphql/types"
 import { LoadingCircular } from "../../../common/components/LoadingCircular"
-import { useWarningSnackbar } from "../../../common/components/WarningSnackBar"
+import {
+  SuccessSnackBar,
+  useSuccessSnackbar,
+} from "../../../common/components/SuccessSnackBar"
+import {
+  useWarningSnackbar,
+  WarningSnackBar,
+} from "../../../common/components/WarningSnackBar"
 import { useLoginUser } from "../../../common/hooks/useLoginUser"
 import { theme } from "../../../theme"
 import { useAmount } from "../hooks/useAmount"
@@ -23,24 +30,26 @@ export function NewPaymentTemplate() {
   const { productName } = useProductName()
   const { amount, taxIncluded, numberOfProduct } = useAmount()
   const { openWarningSnackbar } = useWarningSnackbar()
+  const { openSuccessSnackbar } = useSuccessSnackbar()
   const [createPayment, { loading }] = useCreatePaymentMutation()
 
   const handleSubmitButtonClick = useCallback(async () => {
-    // TODO: バリデーションの作成
-
-    // 入力チェックのため
-    // Mutation発火予定
-    await createPayment({
-      variables: {
-        userId: userId,
-        categoryId: categoryId,
-        paidOn: paidOnDate.toLocaleString(),
-        taxIncluded: Boolean(taxIncluded),
-        numberOfProduct: numberOfProduct,
-        amount: amount,
-        productName: productName,
-      },
-    })
+    try {
+      await createPayment({
+        variables: {
+          userId: userId,
+          categoryId: categoryId,
+          paidOn: paidOnDate.toLocaleString(),
+          taxIncluded: Boolean(taxIncluded),
+          numberOfProduct: numberOfProduct,
+          amount: amount,
+          productName: productName,
+        },
+      })
+      openSuccessSnackbar("支払いの入力ができました")
+    } catch (e) {
+      openWarningSnackbar(e.message)
+    }
   }, [
     paidOnDate,
     categoryId,
@@ -81,6 +90,8 @@ export function NewPaymentTemplate() {
           </Grid>
         </Grid>
       </Container>
+      <SuccessSnackBar />
+      <WarningSnackBar />
       <LoadingCircular loading={loading} />
     </>
   )
