@@ -1,0 +1,16 @@
+query products(
+    $userId: ID!
+    $productName: String
+) {
+    products(
+        input: {
+            userId: $userId,
+            productName: $productName
+        }
+    ) {
+        id
+        name
+        createdAt
+        updatedAt
+    }
+}

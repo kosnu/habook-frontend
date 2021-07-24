@@ -68,7 +68,7 @@ type Query {
     payment(id: ID!): Payment
     payments(input: SearchPayments): [Payment!]!
     product(id: ID!): Product
-    products: [Product!]!
+    products(input: SearchProduct): [Product!]!
     user(id: ID!): User
     users: [User!]!
 }
@@ -124,6 +124,11 @@ input SearchIncomeHistory {
 
 input SearchPayments {
     categoryId: ID
+    productName: String
+    userId: ID!
+}
+
+input SearchProduct {
     productName: String
     userId: ID!
 }

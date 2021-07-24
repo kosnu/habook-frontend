@@ -2,16 +2,14 @@ import { css } from "@emotion/react"
 import { TextField } from "@material-ui/core"
 import { Autocomplete } from "@material-ui/lab"
 import React, { useCallback } from "react"
-import { usePaymentsQuery } from "../../../../graphql/types"
+import { useProductsQuery } from "../../../../graphql/types"
 import { useLoginUser } from "../../../common/hooks/useLoginUser"
-import { useCategories } from "../hooks/useCategories"
-import { useProductName } from "../hooks/useProductName"
+import { useCreatePayment } from "../hooks/useCreatePayment"
 
 export function ProductNameAutocomplete() {
   const { userId } = useLoginUser()
-  const { productName, onProductNameChange } = useProductName()
-  const { onCategoryChange } = useCategories()
-  const { data } = usePaymentsQuery({
+  const { productName, onProductNameChange } = useCreatePayment()
+  const { data, loading } = useProductsQuery({
     variables: { userId: userId, productName: productName },
   })
 
@@ -22,37 +20,21 @@ export function ProductNameAutocomplete() {
     [onProductNameChange],
   )
 
-  const handleChange = useCallback(
-    (_, value, reason) => {
-      if (reason === "select-option") {
-        if (data?.payments) {
-          const payment = data?.payments.filter(
-            (payment) => payment.product.name === value,
-          )[0]
-          onCategoryChange(payment.category.id)
-        }
-      }
-    },
-    [data?.payments, onCategoryChange],
-  )
-
   return (
     <>
       <Autocomplete
         freeSolo
         id="combo-box-product-name"
         options={
-          data?.payments
-            ? data.payments.map((payment) => payment.product.name)
-            : []
+          data?.products ? data.products.map((product) => product.name) : []
         }
         css={wrapperProductNameFormStyle}
+        loading={loading}
         renderInput={(params) => (
           <TextField {...params} label="商品名" variant="standard" />
         )}
         inputValue={productName}
         onInputChange={handleInputChange}
-        onChange={handleChange}
       />
     </>
   )

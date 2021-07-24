@@ -9,7 +9,7 @@ import {
   TextField,
 } from "@material-ui/core"
 import React, { useCallback } from "react"
-import { useAmount } from "../hooks/useAmount"
+import { useCreatePayment } from "../hooks/useCreatePayment"
 
 export function AmountInput() {
   const {
@@ -19,7 +19,7 @@ export function AmountInput() {
     onAmountChange,
     onTaxIncludedSelect,
     onNumberOfProductSelect,
-  } = useAmount()
+  } = useCreatePayment()
 
   const handleAmountChange = useCallback(
     (event) => {
@@ -87,9 +87,10 @@ export function AmountInput() {
               onChange={handleNumberOfProductChange}
             >
               {Array.from(Array(10).keys()).map((num, index) => {
+                const valueNumber = num + 1
                 return (
-                  <MenuItem key={index} value={num + 1}>
-                    {num + 1}
+                  <MenuItem key={index} value={valueNumber}>
+                    {valueNumber}
                   </MenuItem>
                 )
               })}
