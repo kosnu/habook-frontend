@@ -1,6 +1,7 @@
 import { css } from "@emotion/react"
-import { CircularProgress, Grid, Modal } from "@material-ui/core"
+import { Backdrop, CircularProgress } from "@material-ui/core"
 import React from "react"
+import { theme } from "../../theme"
 
 interface LoadingCircularProps {
   loading: boolean
@@ -9,22 +10,15 @@ interface LoadingCircularProps {
 export function LoadingCircular({ loading }: LoadingCircularProps) {
   return (
     <>
-      <Modal open={loading}>
-        <Grid
-          container
-          css={wrapperCircularStyle}
-          justifyContent={"center"}
-          alignItems={"center"}
-        >
-          <CircularProgress size={"4rem"} />
-        </Grid>
-      </Modal>
+      <Backdrop open={loading} css={wrapperBackdropCircularStyle}>
+        <CircularProgress size={"4rem"} />
+      </Backdrop>
     </>
   )
 }
 
-const wrapperCircularStyle = css`
-  width: 100vw;
-  height: 100vh;
-  display: flex;
+const wrapperBackdropCircularStyle = css`
+  && {
+    z-index: ${theme.zIndex.drawer + 1};
+  }
 `
