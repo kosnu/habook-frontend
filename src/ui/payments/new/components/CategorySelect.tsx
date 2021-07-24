@@ -3,11 +3,11 @@ import { FormControl, InputLabel, MenuItem, Select } from "@material-ui/core"
 import React, { useCallback } from "react"
 import { useCategoriesQuery } from "../../../../graphql/types"
 import { useLoginUser } from "../../../common/hooks/useLoginUser"
-import { useCategories } from "../hooks/useCategories"
+import { useCreatePayment } from "../hooks/useCreatePayment"
 
 export function CategorySelect() {
   const { userId } = useLoginUser()
-  const { categoryId, onCategoryIdChange } = useCategories()
+  const { categoryId, onCategoryIdChange } = useCreatePayment()
   const { data } = useCategoriesQuery({
     variables: { userId: userId, enable: true },
   })

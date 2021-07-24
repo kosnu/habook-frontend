@@ -242,7 +242,7 @@ export type CategoriesQuery = (
 export type CreatePaymentMutationVariables = Exact<{
   userId: Scalars['ID'];
   categoryId: Scalars['ID'];
-  paidOn: Scalars['String'];
+  paidOnDate: Scalars['String'];
   taxIncluded: Scalars['Boolean'];
   numberOfProduct: Scalars['Int'];
   amount: Scalars['Int'];
@@ -338,9 +338,9 @@ export type CategoriesQueryHookResult = ReturnType<typeof useCategoriesQuery>;
 export type CategoriesLazyQueryHookResult = ReturnType<typeof useCategoriesLazyQuery>;
 export type CategoriesQueryResult = Apollo.QueryResult<CategoriesQuery, CategoriesQueryVariables>;
 export const CreatePaymentDocument = gql`
-    mutation createPayment($userId: ID!, $categoryId: ID!, $paidOn: String!, $taxIncluded: Boolean!, $numberOfProduct: Int!, $amount: Int!, $productName: String!) {
+    mutation createPayment($userId: ID!, $categoryId: ID!, $paidOnDate: String!, $taxIncluded: Boolean!, $numberOfProduct: Int!, $amount: Int!, $productName: String!) {
   createPayment(
-    input: {userId: $userId, categoryId: $categoryId, paidOn: $paidOn, taxIncluded: $taxIncluded, numberOfProduct: $numberOfProduct, amount: $amount, productName: $productName}
+    input: {userId: $userId, categoryId: $categoryId, paidOn: $paidOnDate, taxIncluded: $taxIncluded, numberOfProduct: $numberOfProduct, amount: $amount, productName: $productName}
   ) {
     id
     category {
@@ -373,7 +373,7 @@ export type CreatePaymentMutationFn = Apollo.MutationFunction<CreatePaymentMutat
  *   variables: {
  *      userId: // value for 'userId'
  *      categoryId: // value for 'categoryId'
- *      paidOn: // value for 'paidOn'
+ *      paidOnDate: // value for 'paidOnDate'
  *      taxIncluded: // value for 'taxIncluded'
  *      numberOfProduct: // value for 'numberOfProduct'
  *      amount: // value for 'amount'

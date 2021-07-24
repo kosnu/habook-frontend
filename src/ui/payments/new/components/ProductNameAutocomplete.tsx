@@ -4,11 +4,11 @@ import { Autocomplete } from "@material-ui/lab"
 import React, { useCallback } from "react"
 import { useProductsQuery } from "../../../../graphql/types"
 import { useLoginUser } from "../../../common/hooks/useLoginUser"
-import { useProductName } from "../hooks/useProductName"
+import { useCreatePayment } from "../hooks/useCreatePayment"
 
 export function ProductNameAutocomplete() {
   const { userId } = useLoginUser()
-  const { productName, onProductNameChange } = useProductName()
+  const { productName, onProductNameChange } = useCreatePayment()
   const { data, loading } = useProductsQuery({
     variables: { userId: userId, productName: productName },
   })

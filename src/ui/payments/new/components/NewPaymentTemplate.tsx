@@ -1,6 +1,7 @@
 import { css } from "@emotion/react"
 import { Container, Divider, Grid, Typography } from "@material-ui/core"
 import React, { useCallback } from "react"
+import { useRecoilValue } from "recoil"
 import { useCreatePaymentMutation } from "../../../../graphql/types"
 import { LoadingCircular } from "../../../common/components/LoadingCircular"
 import {
@@ -13,10 +14,7 @@ import {
 } from "../../../common/components/WarningSnackBar"
 import { useLoginUser } from "../../../common/hooks/useLoginUser"
 import { theme } from "../../../theme"
-import { useAmount } from "../hooks/useAmount"
-import { useCategories } from "../hooks/useCategories"
-import { usePaidOnDate } from "../hooks/usePaidOnDate"
-import { useProductName } from "../hooks/useProductName"
+import { createPaymentParamsSelector } from "../hooks/useCreatePayment"
 import { AmountInput } from "./AmountInput"
 import { CategorySelect } from "./CategorySelect"
 import { CreatePaymentButton } from "./CreatePaymentButton"
@@ -25,10 +23,7 @@ import { ProductNameAutocomplete } from "./ProductNameAutocomplete"
 
 export function NewPaymentTemplate() {
   const { userId } = useLoginUser()
-  const { paidOnDate } = usePaidOnDate()
-  const { categoryId } = useCategories()
-  const { productName } = useProductName()
-  const { amount, taxIncluded, numberOfProduct } = useAmount()
+  const params = useRecoilValue(createPaymentParamsSelector)
   const { openWarningSnackbar } = useWarningSnackbar()
   const { openSuccessSnackbar } = useSuccessSnackbar()
   const [createPayment, { loading }] = useCreatePaymentMutation()
@@ -38,29 +33,14 @@ export function NewPaymentTemplate() {
       await createPayment({
         variables: {
           userId: userId,
-          categoryId: categoryId,
-          paidOn: paidOnDate.toLocaleString(),
-          taxIncluded: Boolean(taxIncluded),
-          numberOfProduct: numberOfProduct,
-          amount: amount,
-          productName: productName,
+          ...params,
         },
       })
       openSuccessSnackbar("支払いの入力ができました")
     } catch (e) {
       openWarningSnackbar(e.message)
     }
-  }, [
-    paidOnDate,
-    categoryId,
-    productName,
-    amount,
-    taxIncluded,
-    numberOfProduct,
-    openWarningSnackbar,
-    userId,
-    createPayment,
-  ])
+  }, [params, openWarningSnackbar, userId, createPayment])
 
   return (
     <>
