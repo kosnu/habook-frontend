@@ -42,7 +42,9 @@ export function AdditionalMenuButton({
         <MenuItem onClick={onMenuClose}>
           <Link href={"/payments/new"}>支払いの作成</Link>
         </MenuItem>
-        <MenuItem onClick={() => alert("")}>New Category</MenuItem>
+        <MenuItem onClick={onMenuClose}>
+          <Link href={"/categories/new"}>カテゴリーの作成</Link>
+        </MenuItem>
       </Menu>
     </>
   )
