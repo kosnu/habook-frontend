@@ -1,5 +1,6 @@
-import { gql } from "@apollo/client"
 import * as Apollo from "@apollo/client"
+import { gql } from "@apollo/client"
+
 export type Maybe<T> = T | null
 export type Exact<T extends { [key: string]: unknown }> = {
   [K in keyof T]: T[K]
@@ -18,14 +19,37 @@ export type Scalars = {
   Float: number
 }
 
-export type Category = {
+export type Category = Node & {
   __typename?: "Category"
   createdAt: Scalars["String"]
   enable: Scalars["Boolean"]
   id: Scalars["ID"]
   name: Scalars["String"]
+  pk: Scalars["Int"]
   updatedAt: Scalars["String"]
   user: User
+}
+
+export type CategoryConnection = Connection & {
+  __typename?: "CategoryConnection"
+  edges: Array<Maybe<CategoryEdge>>
+  pageInfo: PageInfo
+}
+
+export type CategoryEdge = Edge & {
+  __typename?: "CategoryEdge"
+  cursor: Scalars["String"]
+  node: Category
+}
+
+export type Connection = {
+  edges: Array<Maybe<Edge>>
+  pageInfo: PageInfo
+}
+
+export type Edge = {
+  cursor: Scalars["String"]
+  node: Node
 }
 
 export type ExpenseHistory = {
@@ -33,6 +57,7 @@ export type ExpenseHistory = {
   createdAt: Scalars["String"]
   expense: Scalars["Int"]
   id: Scalars["ID"]
+  pk: Scalars["Int"]
   updatedAt: Scalars["String"]
   user: User
 }
@@ -42,6 +67,7 @@ export type IncomeHistory = {
   createdAt: Scalars["String"]
   id: Scalars["ID"]
   income: Scalars["Int"]
+  pk: Scalars["Int"]
   updatedAt: Scalars["String"]
   user: User
 }
@@ -104,6 +130,21 @@ export type NewUser = {
   name: Scalars["String"]
 }
 
+export type Node = {
+  id: Scalars["ID"]
+}
+
+export type PageInfo = {
+  __typename?: "PageInfo"
+  endCursor: Scalars["String"]
+  hasNextPage: Scalars["Boolean"]
+}
+
+export type PaginationInput = {
+  after?: Maybe<Scalars["String"]>
+  first?: Maybe<Scalars["Int"]>
+}
+
 export type Payment = {
   __typename?: "Payment"
   amount: Scalars["Int"]
@@ -112,23 +153,37 @@ export type Payment = {
   id: Scalars["ID"]
   numberOfProduct: Scalars["Int"]
   paidOn: Scalars["String"]
+  pk: Scalars["Int"]
   product: Product
   taxIncluded: Scalars["Boolean"]
   updatedAt: Scalars["String"]
   user: User
 }
 
-export type Product = {
+export type Product = Node & {
   __typename?: "Product"
   createdAt: Scalars["String"]
   id: Scalars["ID"]
   name: Scalars["String"]
+  pk: Scalars["Int"]
   updatedAt: Scalars["String"]
+}
+
+export type ProductConnection = Connection & {
+  __typename?: "ProductConnection"
+  edges: Array<Maybe<ProductEdge>>
+  pageInfo: PageInfo
+}
+
+export type ProductEdge = Edge & {
+  __typename?: "ProductEdge"
+  cursor: Scalars["String"]
+  node: Product
 }
 
 export type Query = {
   __typename?: "Query"
-  categories: Array<Category>
+  categories?: Maybe<CategoryConnection>
   category?: Maybe<Category>
   expenseHistories: Array<ExpenseHistory>
   expenseHistory?: Maybe<ExpenseHistory>
@@ -137,13 +192,14 @@ export type Query = {
   payment?: Maybe<Payment>
   payments: Array<Payment>
   product?: Maybe<Product>
-  products: Array<Product>
+  products?: Maybe<ProductConnection>
   user?: Maybe<User>
   users: Array<User>
 }
 
 export type QueryCategoriesArgs = {
   input?: Maybe<SearchCategories>
+  page: PaginationInput
 }
 
 export type QueryCategoryArgs = {
@@ -176,6 +232,7 @@ export type QueryProductArgs = {
 
 export type QueryProductsArgs = {
   input?: Maybe<SearchProduct>
+  page: PaginationInput
 }
 
 export type QueryUserArgs = {
@@ -211,6 +268,7 @@ export type User = {
   enable: Scalars["Boolean"]
   id: Scalars["ID"]
   name: Scalars["String"]
+  pk: Scalars["Int"]
   updatedAt: Scalars["String"]
 }
 
@@ -226,10 +284,25 @@ export type CreateCategoryMutation = { __typename?: "Mutation" } & {
 export type CategoriesQueryVariables = Exact<{
   userId: Scalars["ID"]
   enable?: Maybe<Scalars["Boolean"]>
+  cursor?: Maybe<Scalars["String"]>
+  limit: Scalars["Int"]
 }>
 
 export type CategoriesQuery = { __typename?: "Query" } & {
-  categories: Array<{ __typename?: "Category" } & Pick<Category, "id" | "name">>
+  categories?: Maybe<
+    { __typename?: "CategoryConnection" } & {
+      edges: Array<
+        Maybe<
+          { __typename?: "CategoryEdge" } & Pick<CategoryEdge, "cursor"> & {
+              node: { __typename: "Category" } & Pick<
+                Category,
+                "pk" | "id" | "name" | "enable" | "createdAt" | "updatedAt"
+              >
+            }
+        >
+      >
+    }
+  >
 }
 
 export type CreatePaymentMutationVariables = Exact<{
@@ -258,11 +331,16 @@ export type ProductsQueryVariables = Exact<{
 }>
 
 export type ProductsQuery = { __typename?: "Query" } & {
-  products: Array<
-    { __typename?: "Product" } & Pick<
-      Product,
-      "id" | "name" | "createdAt" | "updatedAt"
-    >
+  products?: Maybe<
+    { __typename?: "ProductConnection" } & {
+      edges: Array<
+        Maybe<
+          { __typename?: "ProductEdge" } & Pick<ProductEdge, "cursor"> & {
+              node: { __typename?: "Product" } & Pick<Product, "id" | "name">
+            }
+        >
+      >
+    }
   >
 }
 
@@ -309,6 +387,7 @@ export function useCreateCategoryMutation(
     CreateCategoryMutationVariables
   >(CreateCategoryDocument, options)
 }
+
 export type CreateCategoryMutationHookResult = ReturnType<
   typeof useCreateCategoryMutation
 >
@@ -319,10 +398,28 @@ export type CreateCategoryMutationOptions = Apollo.BaseMutationOptions<
   CreateCategoryMutationVariables
 >
 export const CategoriesDocument = gql`
-  query categories($userId: ID!, $enable: Boolean) {
-    categories(input: { userId: $userId, enable: $enable }) {
-      id
-      name
+  query categories(
+    $userId: ID!
+    $enable: Boolean
+    $cursor: String
+    $limit: Int!
+  ) {
+    categories(
+      input: { userId: $userId, enable: $enable }
+      page: { first: $limit, after: $cursor }
+    ) {
+      edges {
+        cursor
+        node {
+          __typename
+          pk
+          id
+          name
+          enable
+          createdAt
+          updatedAt
+        }
+      }
     }
   }
 `
@@ -341,6 +438,8 @@ export const CategoriesDocument = gql`
  *   variables: {
  *      userId: // value for 'userId'
  *      enable: // value for 'enable'
+ *      cursor: // value for 'cursor'
+ *      limit: // value for 'limit'
  *   },
  * });
  */
@@ -356,6 +455,7 @@ export function useCategoriesQuery(
     options,
   )
 }
+
 export function useCategoriesLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<
     CategoriesQuery,
@@ -368,6 +468,7 @@ export function useCategoriesLazyQuery(
     options,
   )
 }
+
 export type CategoriesQueryHookResult = ReturnType<typeof useCategoriesQuery>
 export type CategoriesLazyQueryHookResult = ReturnType<
   typeof useCategoriesLazyQuery
@@ -451,6 +552,7 @@ export function useCreatePaymentMutation(
     CreatePaymentMutationVariables
   >(CreatePaymentDocument, options)
 }
+
 export type CreatePaymentMutationHookResult = ReturnType<
   typeof useCreatePaymentMutation
 >
@@ -462,11 +564,14 @@ export type CreatePaymentMutationOptions = Apollo.BaseMutationOptions<
 >
 export const ProductsDocument = gql`
   query products($userId: ID!, $productName: String) {
-    products(input: { userId: $userId, productName: $productName }) {
-      id
-      name
-      createdAt
-      updatedAt
+    products(input: { userId: $userId, productName: $productName }, page: {}) {
+      edges {
+        cursor
+        node {
+          id
+          name
+        }
+      }
     }
   }
 `
@@ -497,6 +602,7 @@ export function useProductsQuery(
     options,
   )
 }
+
 export function useProductsLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<
     ProductsQuery,
@@ -509,6 +615,7 @@ export function useProductsLazyQuery(
     options,
   )
 }
+
 export type ProductsQueryHookResult = ReturnType<typeof useProductsQuery>
 export type ProductsLazyQueryHookResult = ReturnType<
   typeof useProductsLazyQuery

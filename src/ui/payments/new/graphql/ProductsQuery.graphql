@@ -7,10 +7,14 @@ query products(
             userId: $userId,
             productName: $productName
         }
+        page: {}
     ) {
-        id
-        name
-        createdAt
-        updatedAt
+        edges {
+            cursor
+            node {
+                id
+                name
+            }
+        }
     }
 }
