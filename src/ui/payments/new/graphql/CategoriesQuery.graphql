@@ -2,7 +2,7 @@ query categories(
     $userId: ID!,
     $enable: Boolean,
     $cursor: String,
-    $limit: Int!
+    $limit: Int
 ) {
     categories(
         input: {
