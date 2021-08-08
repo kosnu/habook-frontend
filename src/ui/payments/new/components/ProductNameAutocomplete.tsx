@@ -13,6 +13,13 @@ export function ProductNameAutocomplete() {
     variables: { userId: userId, productName: productName },
   })
 
+  const products =
+    (data?.products &&
+      data.products.edges
+        .filter((value): value is NonNullable<typeof value> => !!value)
+        .map((edge) => edge.node)) ??
+    []
+
   const handleInputChange = useCallback(
     (_, value) => {
       onProductNameChange(value)
@@ -25,9 +32,7 @@ export function ProductNameAutocomplete() {
       <Autocomplete
         freeSolo
         id="combo-box-product-name"
-        options={
-          data?.products ? data.products.map((product) => product.name) : []
-        }
+        options={products.map((product) => product.name)}
         css={wrapperProductNameFormStyle}
         loading={loading}
         renderInput={(params) => (
