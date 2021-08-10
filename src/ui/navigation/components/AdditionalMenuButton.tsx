@@ -7,15 +7,15 @@ import Link from "next/link"
 import React from "react"
 
 interface AdditionalMenuButtonProps {
-  open: boolean
-  onMenuOpen: () => void
+  anchorEl: null | HTMLElement
+  onMenuOpen: (event: React.MouseEvent<HTMLButtonElement>) => void
   onMenuClose: () => void
 }
 
 const menuId = "primary-additional-menu"
 
 export function AdditionalMenuButton({
-  open,
+  anchorEl,
   onMenuOpen,
   onMenuClose,
 }: AdditionalMenuButtonProps) {
@@ -23,7 +23,7 @@ export function AdditionalMenuButton({
     <>
       <Button
         aria-label="additional-menu-icon"
-        aria-controls={menuId}
+        // aria-controls={menuId}
         aria-haspopup="true"
         color="primary"
         onClick={onMenuOpen}
@@ -32,11 +32,12 @@ export function AdditionalMenuButton({
         <ArrowDropDownIcon />
       </Button>
       <Menu
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
         id={menuId}
         keepMounted
+        anchorEl={anchorEl}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
         transformOrigin={{ vertical: "top", horizontal: "right" }}
-        open={open}
+        open={Boolean(anchorEl)}
         onClose={onMenuClose}
       >
         <MenuItem onClick={onMenuClose}>
