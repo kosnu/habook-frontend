@@ -9,7 +9,7 @@ import { CategoryList } from "./CategoryList"
 export function CategoryListTemplate() {
   const { userId } = useLoginUser()
   const { data } = useCategoriesListQuery({
-    variables: { userId: userId, enable: true },
+    variables: { userId: userId, enable: true, limit: 30 },
   })
 
   const categories =
