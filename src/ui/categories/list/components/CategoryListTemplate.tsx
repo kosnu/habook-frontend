@@ -18,6 +18,7 @@ export function CategoryListTemplate() {
         .filter((value): value is NonNullable<typeof value> => !!value)
         .map((edge) => edge.node)) ??
     []
+
   return (
     <>
       <Container css={wrapperStyle} maxWidth={"md"}>

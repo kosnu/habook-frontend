@@ -12,10 +12,9 @@ import { CategoryListItemFragment } from "../../../../graphql/types"
 
 interface CategoryItemProps {
   category: CategoryListItemFragment
-  key: number
 }
 
-export function CategoryItem({ category, key }: CategoryItemProps) {
+export function CategoryItem({ category }: CategoryItemProps) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const handleMenuOpen = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -30,7 +29,7 @@ export function CategoryItem({ category, key }: CategoryItemProps) {
 
   return (
     <>
-      <ListItem key={key}>
+      <ListItem>
         <ListItemText primary={category.name} />
         <ListItemSecondaryAction>
           <IconButton
@@ -40,19 +39,19 @@ export function CategoryItem({ category, key }: CategoryItemProps) {
           >
             <MoreVertIcon />
           </IconButton>
+          <Menu
+            id={`category-item-${category.id}`}
+            anchorEl={anchorEl}
+            keepMounted
+            open={Boolean(anchorEl)}
+            onClose={handleMenuClose}
+          >
+            <MenuItem onClick={handleMenuClose}>編集</MenuItem>
+            <MenuItem style={{ color: "red" }} onClick={handleMenuClose}>
+              削除
+            </MenuItem>
+          </Menu>
         </ListItemSecondaryAction>
-        <Menu
-          id={`category-item-${key}`}
-          anchorEl={anchorEl}
-          keepMounted
-          open={Boolean(anchorEl)}
-          onClose={handleMenuClose}
-        >
-          <MenuItem onClick={handleMenuClose}>編集</MenuItem>
-          <MenuItem style={{ color: "red" }} onClick={handleMenuClose}>
-            削除
-          </MenuItem>
-        </Menu>
       </ListItem>
     </>
   )
