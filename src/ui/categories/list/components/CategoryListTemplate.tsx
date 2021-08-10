@@ -2,13 +2,14 @@ import { css } from "@emotion/react"
 import { Container, Divider, Typography } from "@material-ui/core"
 import React from "react"
 import { useCategoriesListQuery } from "../../../../graphql/types"
+import { LoadingCircular } from "../../../common/components/LoadingCircular"
 import { useLoginUser } from "../../../common/hooks/useLoginUser"
 import { theme } from "../../../theme"
 import { CategoryList } from "./CategoryList"
 
 export function CategoryListTemplate() {
   const { userId } = useLoginUser()
-  const { data } = useCategoriesListQuery({
+  const { data, loading } = useCategoriesListQuery({
     variables: { userId: userId, enable: true, limit: 30 },
   })
 
@@ -26,6 +27,7 @@ export function CategoryListTemplate() {
         <Divider variant={"fullWidth"} />
         <CategoryList categories={categories} />
       </Container>
+      <LoadingCircular loading={loading} />
     </>
   )
 }
