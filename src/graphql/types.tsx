@@ -289,10 +289,14 @@ export type CategoriesListQuery = {
   __typename?: "Query"
   categories?: Maybe<{
     __typename?: "CategoryConnection"
+    pageInfo: {
+      __typename?: "PageInfo"
+      endCursor: string
+      hasNextPage: boolean
+    }
     edges: Array<
       Maybe<{
         __typename?: "CategoryEdge"
-        cursor: string
         node: {
           __typename: "Category"
           id: string
@@ -405,8 +409,11 @@ export const CategoriesListDocument = gql`
       input: { userId: $userId, enable: $enable }
       page: { first: $limit, after: $cursor }
     ) {
+      pageInfo {
+        endCursor
+        hasNextPage
+      }
       edges {
-        cursor
         node {
           ...CategoryListItem
         }

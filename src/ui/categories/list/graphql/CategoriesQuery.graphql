@@ -21,8 +21,11 @@ query categoriesList(
             after: $cursor
         }
     ) {
+        pageInfo {
+            endCursor
+            hasNextPage
+        }
         edges {
-            cursor
             node {
                 ...CategoryListItem
             }
