@@ -3,30 +3,17 @@ import {
   ListItem,
   ListItemSecondaryAction,
   ListItemText,
-  Menu,
-  MenuItem,
 } from "@material-ui/core"
 import { MoreVert as MoreVertIcon } from "@material-ui/icons"
-import React, { useCallback } from "react"
+import React from "react"
 import { CategoryListItemFragment } from "../../../../graphql/types"
 
 interface CategoryItemProps {
   category: CategoryListItemFragment
+  onMenuOpen: (event: React.MouseEvent<HTMLButtonElement>) => void
 }
 
-export function CategoryItem({ category }: CategoryItemProps) {
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
-  const handleMenuOpen = useCallback(
-    (event: React.MouseEvent<HTMLButtonElement>) => {
-      setAnchorEl(event.currentTarget)
-    },
-    [setAnchorEl],
-  )
-
-  const handleMenuClose = useCallback(() => {
-    setAnchorEl(null)
-  }, [setAnchorEl])
-
+export function CategoryItem({ category, onMenuOpen }: CategoryItemProps) {
   return (
     <>
       <ListItem>
@@ -35,22 +22,10 @@ export function CategoryItem({ category }: CategoryItemProps) {
           <IconButton
             edge="end"
             aria-label="category-menu-more"
-            onClick={handleMenuOpen}
+            onClick={onMenuOpen}
           >
             <MoreVertIcon />
           </IconButton>
-          <Menu
-            id={`category-item-${category.id}`}
-            anchorEl={anchorEl}
-            keepMounted
-            open={Boolean(anchorEl)}
-            onClose={handleMenuClose}
-          >
-            <MenuItem onClick={handleMenuClose}>編集</MenuItem>
-            <MenuItem style={{ color: "red" }} onClick={handleMenuClose}>
-              削除
-            </MenuItem>
-          </Menu>
         </ListItemSecondaryAction>
       </ListItem>
     </>
