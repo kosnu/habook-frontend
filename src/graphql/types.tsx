@@ -1,5 +1,6 @@
-import { gql } from "@apollo/client"
 import * as Apollo from "@apollo/client"
+import { gql } from "@apollo/client"
+
 export type Maybe<T> = T | null
 export type Exact<T extends { [key: string]: unknown }> = {
   [K in keyof T]: T[K]
@@ -182,7 +183,7 @@ export type ProductEdge = Edge & {
 
 export type Query = {
   __typename?: "Query"
-  categories?: Maybe<CategoryConnection>
+  categories: CategoryConnection
   category?: Maybe<Category>
   expenseHistories: Array<ExpenseHistory>
   expenseHistory?: Maybe<ExpenseHistory>
@@ -191,7 +192,7 @@ export type Query = {
   payment?: Maybe<Payment>
   payments: Array<Payment>
   product?: Maybe<Product>
-  products?: Maybe<ProductConnection>
+  products: ProductConnection
   user?: Maybe<User>
   users: Array<User>
 }
@@ -287,7 +288,7 @@ export type CategoriesListQueryVariables = Exact<{
 
 export type CategoriesListQuery = {
   __typename?: "Query"
-  categories?: Maybe<{
+  categories: {
     __typename?: "CategoryConnection"
     pageInfo: {
       __typename?: "PageInfo"
@@ -305,7 +306,7 @@ export type CategoriesListQuery = {
         }
       }>
     >
-  }>
+  }
 }
 
 export type CreateCategoryMutationVariables = Exact<{
@@ -327,7 +328,7 @@ export type CategoriesQueryVariables = Exact<{
 
 export type CategoriesQuery = {
   __typename?: "Query"
-  categories?: Maybe<{
+  categories: {
     __typename?: "CategoryConnection"
     edges: Array<
       Maybe<{
@@ -344,7 +345,7 @@ export type CategoriesQuery = {
         }
       }>
     >
-  }>
+  }
 }
 
 export type CreatePaymentMutationVariables = Exact<{
@@ -378,7 +379,7 @@ export type ProductsQueryVariables = Exact<{
 
 export type ProductsQuery = {
   __typename?: "Query"
-  products?: Maybe<{
+  products: {
     __typename?: "ProductConnection"
     edges: Array<
       Maybe<{
@@ -387,7 +388,7 @@ export type ProductsQuery = {
         node: { __typename?: "Product"; id: string; name: string }
       }>
     >
-  }>
+  }
 }
 
 export const CategoryListItemFragmentDoc = gql`
@@ -454,6 +455,7 @@ export function useCategoriesListQuery(
     options,
   )
 }
+
 export function useCategoriesListLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<
     CategoriesListQuery,
@@ -466,6 +468,7 @@ export function useCategoriesListLazyQuery(
     options,
   )
 }
+
 export type CategoriesListQueryHookResult = ReturnType<
   typeof useCategoriesListQuery
 >
@@ -519,6 +522,7 @@ export function useCreateCategoryMutation(
     CreateCategoryMutationVariables
   >(CreateCategoryDocument, options)
 }
+
 export type CreateCategoryMutationHookResult = ReturnType<
   typeof useCreateCategoryMutation
 >
@@ -586,6 +590,7 @@ export function useCategoriesQuery(
     options,
   )
 }
+
 export function useCategoriesLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<
     CategoriesQuery,
@@ -598,6 +603,7 @@ export function useCategoriesLazyQuery(
     options,
   )
 }
+
 export type CategoriesQueryHookResult = ReturnType<typeof useCategoriesQuery>
 export type CategoriesLazyQueryHookResult = ReturnType<
   typeof useCategoriesLazyQuery
@@ -681,6 +687,7 @@ export function useCreatePaymentMutation(
     CreatePaymentMutationVariables
   >(CreatePaymentDocument, options)
 }
+
 export type CreatePaymentMutationHookResult = ReturnType<
   typeof useCreatePaymentMutation
 >
@@ -730,6 +737,7 @@ export function useProductsQuery(
     options,
   )
 }
+
 export function useProductsLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<
     ProductsQuery,
@@ -742,6 +750,7 @@ export function useProductsLazyQuery(
     options,
   )
 }
+
 export type ProductsQueryHookResult = ReturnType<typeof useProductsQuery>
 export type ProductsLazyQueryHookResult = ReturnType<
   typeof useProductsLazyQuery
