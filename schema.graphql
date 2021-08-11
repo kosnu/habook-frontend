@@ -103,7 +103,7 @@ type ProductEdge implements Edge {
 }
 
 type Query {
-    categories(input: SearchCategories, page: PaginationInput!): CategoryConnection
+    categories(input: SearchCategories, page: PaginationInput!): CategoryConnection!
     category(id: ID!): Category
     expenseHistories: [ExpenseHistory!]!
     expenseHistory(id: ID!): ExpenseHistory
@@ -112,7 +112,7 @@ type Query {
     payment(id: ID!): Payment
     payments(input: SearchPayments): [Payment!]!
     product(id: ID!): Product
-    products(input: SearchProduct, page: PaginationInput!): ProductConnection
+    products(input: SearchProduct, page: PaginationInput!): ProductConnection!
     user(id: ID!): User
     users: [User!]!
 }
