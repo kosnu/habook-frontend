@@ -1,5 +1,5 @@
-import { List, Menu, MenuItem } from "@material-ui/core"
-import React, { useCallback } from "react"
+import { List, Menu, MenuItem, Typography } from "@material-ui/core"
+import React from "react"
 import InfiniteScroll from "react-infinite-scroll-component"
 import {
   CategoriesListQuery,
@@ -13,61 +13,53 @@ import { CategoryItem } from "./CategoryItem"
 
 export function CategoryList() {
   const { userId } = useLoginUser()
-  const { data, fetchMore, loading } = useCategoriesListQuery({
+  const { data, fetchMore, loading, error } = useCategoriesListQuery({
     variables: { userId: userId, enable: true, limit: 30 },
   })
   const { anchorEl, openMenu, closeMenu } = useAnchorElement()
 
-  const pageInfo = (data?.categories && data.categories.pageInfo) ?? null
-  const categories =
-    (data?.categories &&
-      data.categories.edges
-        .filter((value): value is NonNullable<typeof value> => !!value)
-        .map((edge) => edge.node)) ??
-    []
+  // TODO: データがないときの画面表示を実装する
+  if (data === undefined) return <Typography>Error</Typography>
 
-  const handleMoreFetch = useCallback(async () => {
+  // TODO: エラーが発生したときの実装をする
+  if (error) return <Typography>Error</Typography>
+
+  const pageInfo = data.categories.pageInfo
+  const categories = data.categories.edges
+    .filter((value): value is NonNullable<typeof value> => !!value)
+    .map((edge) => edge.node)
+
+  const handleMoreFetch = async () => {
+    // TODO: The updateQuery callback for fetchMore is deprecated, and will be removed in the next major version of Apollo Client.
     return await fetchMore<CategoriesListQuery, CategoriesListQueryVariables>({
       variables: {
-        cursor: (pageInfo && pageInfo.endCursor) ?? "",
+        cursor: pageInfo.endCursor,
       },
       updateQuery: (
         previousQueryResult,
         { fetchMoreResult },
       ): CategoriesListQuery => {
-        if (!fetchMoreResult || !fetchMoreResult.categories)
-          return previousQueryResult
-        const previousEdges =
-          (previousQueryResult?.categories &&
-            previousQueryResult.categories.edges) ??
-          []
-        const nextEdges =
-          (fetchMoreResult?.categories &&
-            fetchMoreResult.categories.edges
-              .filter((value): value is NonNullable<typeof value> => !!value)
-              .map((edge) => ({
-                __typename: edge.__typename,
-                node: edge.node,
-              }))) ??
-          []
-
+        if (!fetchMoreResult) return previousQueryResult
         return {
           ...fetchMoreResult,
           categories: {
             ...fetchMoreResult.categories,
-            edges: [...previousEdges, ...nextEdges],
+            edges: [
+              ...previousQueryResult.categories.edges,
+              ...fetchMoreResult.categories.edges,
+            ],
           },
         }
       },
     })
-  }, [fetchMore, pageInfo])
+  }
 
   return (
     <>
       <List>
         <InfiniteScroll
           dataLength={categories.length}
-          hasMore={(pageInfo && pageInfo.hasNextPage) ?? false}
+          hasMore={pageInfo.hasNextPage}
           next={handleMoreFetch}
           loader={<LoadingCircular loading={loading} />}
         >
