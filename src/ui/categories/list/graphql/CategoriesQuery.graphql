@@ -1,0 +1,34 @@
+fragment CategoryListItem on Category {
+    __typename
+    id
+    name
+    enable
+}
+
+query categoriesList(
+    $userId: ID!,
+    $enable: Boolean,
+    $cursor: String,
+    $limit: Int
+) {
+    categories(
+        input: {
+            userId: $userId,
+            enable: $enable
+        },
+        page: {
+            first: $limit,
+            after: $cursor
+        }
+    ) {
+        pageInfo {
+            endCursor
+            hasNextPage
+        }
+        edges {
+            node {
+                ...CategoryListItem
+            }
+        }
+    }
+}

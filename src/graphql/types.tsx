@@ -1,5 +1,6 @@
-import { gql } from "@apollo/client"
 import * as Apollo from "@apollo/client"
+import { gql } from "@apollo/client"
+
 export type Maybe<T> = T | null
 export type Exact<T extends { [key: string]: unknown }> = {
   [K in keyof T]: T[K]
@@ -182,7 +183,7 @@ export type ProductEdge = Edge & {
 
 export type Query = {
   __typename?: "Query"
-  categories?: Maybe<CategoryConnection>
+  categories: CategoryConnection
   category?: Maybe<Category>
   expenseHistories: Array<ExpenseHistory>
   expenseHistory?: Maybe<ExpenseHistory>
@@ -191,7 +192,7 @@ export type Query = {
   payment?: Maybe<Payment>
   payments: Array<Payment>
   product?: Maybe<Product>
-  products?: Maybe<ProductConnection>
+  products: ProductConnection
   user?: Maybe<User>
   users: Array<User>
 }
@@ -271,6 +272,43 @@ export type User = {
   updatedAt: Scalars["String"]
 }
 
+export type CategoryListItemFragment = {
+  __typename: "Category"
+  id: string
+  name: string
+  enable: boolean
+}
+
+export type CategoriesListQueryVariables = Exact<{
+  userId: Scalars["ID"]
+  enable?: Maybe<Scalars["Boolean"]>
+  cursor?: Maybe<Scalars["String"]>
+  limit?: Maybe<Scalars["Int"]>
+}>
+
+export type CategoriesListQuery = {
+  __typename?: "Query"
+  categories: {
+    __typename?: "CategoryConnection"
+    pageInfo: {
+      __typename?: "PageInfo"
+      endCursor: string
+      hasNextPage: boolean
+    }
+    edges: Array<
+      Maybe<{
+        __typename?: "CategoryEdge"
+        node: {
+          __typename: "Category"
+          id: string
+          name: string
+          enable: boolean
+        }
+      }>
+    >
+  }
+}
+
 export type CreateCategoryMutationVariables = Exact<{
   userId: Scalars["ID"]
   categoryName: Scalars["String"]
@@ -290,7 +328,7 @@ export type CategoriesQueryVariables = Exact<{
 
 export type CategoriesQuery = {
   __typename?: "Query"
-  categories?: Maybe<{
+  categories: {
     __typename?: "CategoryConnection"
     edges: Array<
       Maybe<{
@@ -307,7 +345,7 @@ export type CategoriesQuery = {
         }
       }>
     >
-  }>
+  }
 }
 
 export type CreatePaymentMutationVariables = Exact<{
@@ -341,7 +379,7 @@ export type ProductsQueryVariables = Exact<{
 
 export type ProductsQuery = {
   __typename?: "Query"
-  products?: Maybe<{
+  products: {
     __typename?: "ProductConnection"
     edges: Array<
       Maybe<{
@@ -350,9 +388,97 @@ export type ProductsQuery = {
         node: { __typename?: "Product"; id: string; name: string }
       }>
     >
-  }>
+  }
 }
 
+export const CategoryListItemFragmentDoc = gql`
+  fragment CategoryListItem on Category {
+    __typename
+    id
+    name
+    enable
+  }
+`
+export const CategoriesListDocument = gql`
+  query categoriesList(
+    $userId: ID!
+    $enable: Boolean
+    $cursor: String
+    $limit: Int
+  ) {
+    categories(
+      input: { userId: $userId, enable: $enable }
+      page: { first: $limit, after: $cursor }
+    ) {
+      pageInfo {
+        endCursor
+        hasNextPage
+      }
+      edges {
+        node {
+          ...CategoryListItem
+        }
+      }
+    }
+  }
+  ${CategoryListItemFragmentDoc}
+`
+
+/**
+ * __useCategoriesListQuery__
+ *
+ * To run a query within a React component, call `useCategoriesListQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCategoriesListQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCategoriesListQuery({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *      enable: // value for 'enable'
+ *      cursor: // value for 'cursor'
+ *      limit: // value for 'limit'
+ *   },
+ * });
+ */
+export function useCategoriesListQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    CategoriesListQuery,
+    CategoriesListQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<CategoriesListQuery, CategoriesListQueryVariables>(
+    CategoriesListDocument,
+    options,
+  )
+}
+
+export function useCategoriesListLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    CategoriesListQuery,
+    CategoriesListQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<CategoriesListQuery, CategoriesListQueryVariables>(
+    CategoriesListDocument,
+    options,
+  )
+}
+
+export type CategoriesListQueryHookResult = ReturnType<
+  typeof useCategoriesListQuery
+>
+export type CategoriesListLazyQueryHookResult = ReturnType<
+  typeof useCategoriesListLazyQuery
+>
+export type CategoriesListQueryResult = Apollo.QueryResult<
+  CategoriesListQuery,
+  CategoriesListQueryVariables
+>
 export const CreateCategoryDocument = gql`
   mutation createCategory($userId: ID!, $categoryName: String!) {
     createCategory(input: { userId: $userId, name: $categoryName }) {
@@ -396,6 +522,7 @@ export function useCreateCategoryMutation(
     CreateCategoryMutationVariables
   >(CreateCategoryDocument, options)
 }
+
 export type CreateCategoryMutationHookResult = ReturnType<
   typeof useCreateCategoryMutation
 >
@@ -463,6 +590,7 @@ export function useCategoriesQuery(
     options,
   )
 }
+
 export function useCategoriesLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<
     CategoriesQuery,
@@ -475,6 +603,7 @@ export function useCategoriesLazyQuery(
     options,
   )
 }
+
 export type CategoriesQueryHookResult = ReturnType<typeof useCategoriesQuery>
 export type CategoriesLazyQueryHookResult = ReturnType<
   typeof useCategoriesLazyQuery
@@ -558,6 +687,7 @@ export function useCreatePaymentMutation(
     CreatePaymentMutationVariables
   >(CreatePaymentDocument, options)
 }
+
 export type CreatePaymentMutationHookResult = ReturnType<
   typeof useCreatePaymentMutation
 >
@@ -607,6 +737,7 @@ export function useProductsQuery(
     options,
   )
 }
+
 export function useProductsLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<
     ProductsQuery,
@@ -619,6 +750,7 @@ export function useProductsLazyQuery(
     options,
   )
 }
+
 export type ProductsQueryHookResult = ReturnType<typeof useProductsQuery>
 export type ProductsLazyQueryHookResult = ReturnType<
   typeof useProductsLazyQuery

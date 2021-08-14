@@ -1,6 +1,6 @@
 import React, { useCallback } from "react"
 
-export function useAdditionalMenu() {
+export function useAnchorElement() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
 
   const handleMenuOpen = useCallback(
@@ -15,7 +15,7 @@ export function useAdditionalMenu() {
 
   return {
     anchorEl: anchorEl,
-    openAdditionalMenu: handleMenuOpen,
-    closeAdditionalMenu: handleMenuClose,
+    openMenu: handleMenuOpen,
+    closeMenu: handleMenuClose,
   }
 }

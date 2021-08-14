@@ -3,14 +3,15 @@ import { AdditionalMenuButton } from "../components/AdditionalMenuButton"
 import { useAdditionalMenu } from "../hooks/useAdditionalMenu"
 
 export function AdditionalMenuButtonContainer() {
-  const { openMenu, onMenuOpen, onMenuClose } = useAdditionalMenu()
+  const { anchorEl, openAdditionalMenu, closeAdditionalMenu } =
+    useAdditionalMenu()
 
   return (
     <>
       <AdditionalMenuButton
-        open={openMenu}
-        onMenuOpen={onMenuOpen}
-        onMenuClose={onMenuClose}
+        anchorEl={anchorEl}
+        onMenuOpen={openAdditionalMenu}
+        onMenuClose={closeAdditionalMenu}
       />
     </>
   )
