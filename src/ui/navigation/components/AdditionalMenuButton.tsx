@@ -5,20 +5,14 @@ import {
 } from "@material-ui/icons"
 import Link from "next/link"
 import React from "react"
-
-interface AdditionalMenuButtonProps {
-  anchorEl: null | HTMLElement
-  onMenuOpen: (event: React.MouseEvent<HTMLButtonElement>) => void
-  onMenuClose: () => void
-}
+import { useAdditionalMenu } from "../hooks/useAdditionalMenu"
 
 const menuId = "primary-additional-menu"
 
-export function AdditionalMenuButton({
-  anchorEl,
-  onMenuOpen,
-  onMenuClose,
-}: AdditionalMenuButtonProps) {
+export function AdditionalMenuButton() {
+  const { anchorEl, openAdditionalMenu, closeAdditionalMenu } =
+    useAdditionalMenu()
+
   return (
     <>
       <Button
@@ -26,7 +20,7 @@ export function AdditionalMenuButton({
         // aria-controls={menuId}
         aria-haspopup="true"
         color="primary"
-        onClick={onMenuOpen}
+        onClick={openAdditionalMenu}
       >
         <AddIcon />
         <ArrowDropDownIcon />
@@ -38,12 +32,12 @@ export function AdditionalMenuButton({
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
         transformOrigin={{ vertical: "top", horizontal: "right" }}
         open={Boolean(anchorEl)}
-        onClose={onMenuClose}
+        onClose={closeAdditionalMenu}
       >
-        <MenuItem onClick={onMenuClose}>
+        <MenuItem onClick={closeAdditionalMenu}>
           <Link href={"/payments/new"}>支払いの作成</Link>
         </MenuItem>
-        <MenuItem onClick={onMenuClose}>
+        <MenuItem onClick={closeAdditionalMenu}>
           <Link href={"/categories/new"}>カテゴリーの作成</Link>
         </MenuItem>
       </Menu>
