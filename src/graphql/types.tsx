@@ -1,6 +1,5 @@
-import * as Apollo from "@apollo/client"
 import { gql } from "@apollo/client"
-
+import * as Apollo from "@apollo/client"
 export type Maybe<T> = T | null
 export type Exact<T extends { [key: string]: unknown }> = {
   [K in keyof T]: T[K]
@@ -47,6 +46,11 @@ export type Connection = {
   pageInfo: PageInfo
 }
 
+export type DeleteCategory = {
+  id: Scalars["ID"]
+  userId: Scalars["ID"]
+}
+
 export type Edge = {
   cursor: Scalars["String"]
   node: Node
@@ -79,6 +83,7 @@ export type Mutation = {
   createIncomeHistory: IncomeHistory
   createPayment: Payment
   createUser: User
+  deleteCategory: Category
 }
 
 export type MutationCreateCategoryArgs = {
@@ -99,6 +104,10 @@ export type MutationCreatePaymentArgs = {
 
 export type MutationCreateUserArgs = {
   input: NewUser
+}
+
+export type MutationDeleteCategoryArgs = {
+  input: DeleteCategory
 }
 
 export type NewCategory = {
@@ -455,7 +464,6 @@ export function useCategoriesListQuery(
     options,
   )
 }
-
 export function useCategoriesListLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<
     CategoriesListQuery,
@@ -468,7 +476,6 @@ export function useCategoriesListLazyQuery(
     options,
   )
 }
-
 export type CategoriesListQueryHookResult = ReturnType<
   typeof useCategoriesListQuery
 >
@@ -522,7 +529,6 @@ export function useCreateCategoryMutation(
     CreateCategoryMutationVariables
   >(CreateCategoryDocument, options)
 }
-
 export type CreateCategoryMutationHookResult = ReturnType<
   typeof useCreateCategoryMutation
 >
@@ -590,7 +596,6 @@ export function useCategoriesQuery(
     options,
   )
 }
-
 export function useCategoriesLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<
     CategoriesQuery,
@@ -603,7 +608,6 @@ export function useCategoriesLazyQuery(
     options,
   )
 }
-
 export type CategoriesQueryHookResult = ReturnType<typeof useCategoriesQuery>
 export type CategoriesLazyQueryHookResult = ReturnType<
   typeof useCategoriesLazyQuery
@@ -687,7 +691,6 @@ export function useCreatePaymentMutation(
     CreatePaymentMutationVariables
   >(CreatePaymentDocument, options)
 }
-
 export type CreatePaymentMutationHookResult = ReturnType<
   typeof useCreatePaymentMutation
 >
@@ -728,6 +731,7 @@ export const ProductsDocument = gql`
  *   },
  * });
  */
+
 export function useProductsQuery(
   baseOptions: Apollo.QueryHookOptions<ProductsQuery, ProductsQueryVariables>,
 ) {
@@ -737,7 +741,6 @@ export function useProductsQuery(
     options,
   )
 }
-
 export function useProductsLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<
     ProductsQuery,
@@ -750,7 +753,6 @@ export function useProductsLazyQuery(
     options,
   )
 }
-
 export type ProductsQueryHookResult = ReturnType<typeof useProductsQuery>
 export type ProductsLazyQueryHookResult = ReturnType<
   typeof useProductsLazyQuery
