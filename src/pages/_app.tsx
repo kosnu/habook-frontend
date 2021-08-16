@@ -7,7 +7,7 @@ import React from "react"
 import { RecoilRoot } from "recoil"
 import "../../styles/globals.css"
 import { client } from "../graphql/apollo"
-import { HeaderContainer } from "../ui/navigation/comtainer/HeaderContainer"
+import { Header } from "../ui/navigation/components/Header"
 import { theme } from "../ui/theme"
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -16,7 +16,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <ApolloProvider client={client}>
         <ThemeProvider theme={theme}>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <HeaderContainer />
+            <Header />
             <Component {...pageProps} />
           </MuiPickersUtilsProvider>
         </ThemeProvider>

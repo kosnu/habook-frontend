@@ -1,22 +1,15 @@
 import { AppBar, IconButton, Toolbar } from "@material-ui/core"
 import { Menu as MenuIcon } from "@material-ui/icons"
 import React from "react"
+import { useDrawer } from "../hooks/useDrawer"
 import { AccountMenuButton } from "./AccountMenuButton"
 import { AdditionalMenuButton } from "./AdditionalMenuButton"
 import { HeaderDrawer } from "./HeaderDrawer"
 import { HeaderTitle } from "./HeaderTitle"
 
-interface HeaderProps {
-  openDrawer: boolean
-  onDrawerOpen: () => void
-  onDrawerClose: () => void
-}
+export function Header() {
+  const { openDrawer, onDrawerOpen, onDrawerClose } = useDrawer()
 
-export function Header({
-  openDrawer,
-  onDrawerOpen,
-  onDrawerClose,
-}: HeaderProps) {
   return (
     <>
       <AppBar position="static" color={"default"}>
