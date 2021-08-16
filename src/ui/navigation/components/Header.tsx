@@ -1,8 +1,8 @@
 import { AppBar, IconButton, Toolbar } from "@material-ui/core"
 import { Menu as MenuIcon } from "@material-ui/icons"
 import React from "react"
-import { AdditionalMenuButtonContainer } from "../comtainer/AdditionalMenuButtonContainer"
 import { AccountMenuButton } from "./AccountMenuButton"
+import { AdditionalMenuButton } from "./AdditionalMenuButton"
 import { HeaderDrawer } from "./HeaderDrawer"
 import { HeaderTitle } from "./HeaderTitle"
 
@@ -30,7 +30,7 @@ export function Header({
             <MenuIcon />
           </IconButton>
           <HeaderTitle />
-          <AdditionalMenuButtonContainer />
+          <AdditionalMenuButton />
           <AccountMenuButton />
         </Toolbar>
       </AppBar>
