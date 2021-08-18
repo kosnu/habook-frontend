@@ -63,6 +63,7 @@ type Mutation {
     createIncomeHistory(input: NewIncomeHistory!): IncomeHistory!
     createPayment(input: NewPayment!): Payment!
     createUser(input: NewUser!): User!
+    deleteCategory(input: DeleteCategory!): Category!
 }
 
 type PageInfo {
@@ -124,6 +125,11 @@ type User {
     name: String!
     pk: Int!
     updatedAt: String!
+}
+
+input DeleteCategory {
+    id: ID!
+    userId: ID!
 }
 
 input NewCategory {

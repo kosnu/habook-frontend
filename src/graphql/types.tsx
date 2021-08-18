@@ -1,6 +1,5 @@
-import * as Apollo from "@apollo/client"
 import { gql } from "@apollo/client"
-
+import * as Apollo from "@apollo/client"
 export type Maybe<T> = T | null
 export type Exact<T extends { [key: string]: unknown }> = {
   [K in keyof T]: T[K]
@@ -47,6 +46,11 @@ export type Connection = {
   pageInfo: PageInfo
 }
 
+export type DeleteCategory = {
+  id: Scalars["ID"]
+  userId: Scalars["ID"]
+}
+
 export type Edge = {
   cursor: Scalars["String"]
   node: Node
@@ -79,6 +83,7 @@ export type Mutation = {
   createIncomeHistory: IncomeHistory
   createPayment: Payment
   createUser: User
+  deleteCategory: Category
 }
 
 export type MutationCreateCategoryArgs = {
@@ -99,6 +104,10 @@ export type MutationCreatePaymentArgs = {
 
 export type MutationCreateUserArgs = {
   input: NewUser
+}
+
+export type MutationDeleteCategoryArgs = {
+  input: DeleteCategory
 }
 
 export type NewCategory = {
@@ -309,6 +318,28 @@ export type CategoriesListQuery = {
   }
 }
 
+export type CategoryFragment = {
+  __typename: "Category"
+  id: string
+  name: string
+  enable: boolean
+}
+
+export type DeleteCategoryMutationVariables = Exact<{
+  id: Scalars["ID"]
+  userId: Scalars["ID"]
+}>
+
+export type DeleteCategoryMutation = {
+  __typename?: "Mutation"
+  deleteCategory: {
+    __typename: "Category"
+    id: string
+    name: string
+    enable: boolean
+  }
+}
+
 export type CreateCategoryMutationVariables = Exact<{
   userId: Scalars["ID"]
   categoryName: Scalars["String"]
@@ -399,6 +430,14 @@ export const CategoryListItemFragmentDoc = gql`
     enable
   }
 `
+export const CategoryFragmentDoc = gql`
+  fragment Category on Category {
+    __typename
+    id
+    name
+    enable
+  }
+`
 export const CategoriesListDocument = gql`
   query categoriesList(
     $userId: ID!
@@ -455,7 +494,6 @@ export function useCategoriesListQuery(
     options,
   )
 }
-
 export function useCategoriesListLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<
     CategoriesListQuery,
@@ -468,7 +506,6 @@ export function useCategoriesListLazyQuery(
     options,
   )
 }
-
 export type CategoriesListQueryHookResult = ReturnType<
   typeof useCategoriesListQuery
 >
@@ -478,6 +515,58 @@ export type CategoriesListLazyQueryHookResult = ReturnType<
 export type CategoriesListQueryResult = Apollo.QueryResult<
   CategoriesListQuery,
   CategoriesListQueryVariables
+>
+export const DeleteCategoryDocument = gql`
+  mutation deleteCategory($id: ID!, $userId: ID!) {
+    deleteCategory(input: { id: $id, userId: $userId }) {
+      ...Category
+    }
+  }
+  ${CategoryFragmentDoc}
+`
+export type DeleteCategoryMutationFn = Apollo.MutationFunction<
+  DeleteCategoryMutation,
+  DeleteCategoryMutationVariables
+>
+
+/**
+ * __useDeleteCategoryMutation__
+ *
+ * To run a mutation, you first call `useDeleteCategoryMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteCategoryMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteCategoryMutation, { data, loading, error }] = useDeleteCategoryMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useDeleteCategoryMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    DeleteCategoryMutation,
+    DeleteCategoryMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<
+    DeleteCategoryMutation,
+    DeleteCategoryMutationVariables
+  >(DeleteCategoryDocument, options)
+}
+export type DeleteCategoryMutationHookResult = ReturnType<
+  typeof useDeleteCategoryMutation
+>
+export type DeleteCategoryMutationResult =
+  Apollo.MutationResult<DeleteCategoryMutation>
+export type DeleteCategoryMutationOptions = Apollo.BaseMutationOptions<
+  DeleteCategoryMutation,
+  DeleteCategoryMutationVariables
 >
 export const CreateCategoryDocument = gql`
   mutation createCategory($userId: ID!, $categoryName: String!) {
@@ -522,7 +611,6 @@ export function useCreateCategoryMutation(
     CreateCategoryMutationVariables
   >(CreateCategoryDocument, options)
 }
-
 export type CreateCategoryMutationHookResult = ReturnType<
   typeof useCreateCategoryMutation
 >
@@ -590,7 +678,6 @@ export function useCategoriesQuery(
     options,
   )
 }
-
 export function useCategoriesLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<
     CategoriesQuery,
@@ -603,7 +690,6 @@ export function useCategoriesLazyQuery(
     options,
   )
 }
-
 export type CategoriesQueryHookResult = ReturnType<typeof useCategoriesQuery>
 export type CategoriesLazyQueryHookResult = ReturnType<
   typeof useCategoriesLazyQuery
@@ -687,7 +773,6 @@ export function useCreatePaymentMutation(
     CreatePaymentMutationVariables
   >(CreatePaymentDocument, options)
 }
-
 export type CreatePaymentMutationHookResult = ReturnType<
   typeof useCreatePaymentMutation
 >
@@ -737,7 +822,6 @@ export function useProductsQuery(
     options,
   )
 }
-
 export function useProductsLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<
     ProductsQuery,
@@ -750,7 +834,6 @@ export function useProductsLazyQuery(
     options,
   )
 }
-
 export type ProductsQueryHookResult = ReturnType<typeof useProductsQuery>
 export type ProductsLazyQueryHookResult = ReturnType<
   typeof useProductsLazyQuery

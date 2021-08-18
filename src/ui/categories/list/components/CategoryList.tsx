@@ -1,14 +1,23 @@
-import { List, Menu, MenuItem, Typography } from "@material-ui/core"
+import { List, Typography } from "@material-ui/core"
 import React from "react"
 import InfiniteScroll from "react-infinite-scroll-component"
 import {
   CategoriesListQuery,
   CategoriesListQueryVariables,
+  CategoryFragment,
   useCategoriesListQuery,
+  useDeleteCategoryMutation,
 } from "../../../../graphql/types"
 import { LoadingCircular } from "../../../common/components/LoadingCircular"
+import {
+  SuccessSnackBar,
+  useSuccessSnackbar,
+} from "../../../common/components/SuccessSnackBar"
+import {
+  useWarningSnackbar,
+  WarningSnackBar,
+} from "../../../common/components/WarningSnackBar"
 import { useLoginUser } from "../../../common/hooks/useLoginUser"
-import { useAnchorElement } from "../hooks/useAnchorElement"
 import { CategoryItem } from "./CategoryItem"
 
 export function CategoryList() {
@@ -16,10 +25,14 @@ export function CategoryList() {
   const { data, fetchMore, loading, error } = useCategoriesListQuery({
     variables: { userId: userId, enable: true, limit: 30 },
   })
-  const { anchorEl, openMenu, closeMenu } = useAnchorElement()
+  const [deleteCategory] = useDeleteCategoryMutation()
+  const { openWarningSnackbar } = useWarningSnackbar()
+  const { openSuccessSnackbar } = useSuccessSnackbar()
 
   // TODO: データがないときの画面表示を実装する
-  if (data === undefined) return <Typography>Error</Typography>
+  if (data === undefined && !loading) return <Typography>Error</Typography>
+
+  if (data === undefined) return <></> // dataのundefinedを除去
 
   // TODO: エラーが発生したときの実装をする
   if (error) return <Typography>Error</Typography>
@@ -28,6 +41,7 @@ export function CategoryList() {
   const categories = data.categories.edges
     .filter((value): value is NonNullable<typeof value> => !!value)
     .map((edge) => edge.node)
+    .filter((node) => node.enable) // TODO: QueryでもEnable: trueしているので消したい
 
   const handleMoreFetch = async () => {
     // TODO: The updateQuery callback for fetchMore is deprecated, and will be removed in the next major version of Apollo Client.
@@ -54,6 +68,17 @@ export function CategoryList() {
     })
   }
 
+  const handleDeleteClick = async (category: CategoryFragment) => {
+    try {
+      await deleteCategory({
+        variables: { id: category.id, userId: userId },
+      })
+      openSuccessSnackbar("カテゴリーを削除しました")
+    } catch (e) {
+      openWarningSnackbar(e.message)
+    }
+  }
+
   return (
     <>
       <List>
@@ -68,24 +93,14 @@ export function CategoryList() {
               <CategoryItem
                 key={index}
                 category={category}
-                onMenuOpen={openMenu}
+                onDeleteClick={handleDeleteClick}
               />
             )
           })}
         </InfiniteScroll>
       </List>
-      <Menu
-        id={`category-item-menu`}
-        anchorEl={anchorEl}
-        keepMounted
-        open={Boolean(anchorEl)}
-        onClose={closeMenu}
-      >
-        <MenuItem onClick={closeMenu}>編集</MenuItem>
-        <MenuItem style={{ color: "red" }} onClick={closeMenu}>
-          削除
-        </MenuItem>
-      </Menu>
+      <SuccessSnackBar />
+      <WarningSnackBar />
       <LoadingCircular loading={loading} />
     </>
   )
