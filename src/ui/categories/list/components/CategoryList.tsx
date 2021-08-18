@@ -23,7 +23,7 @@ import { CategoryItem } from "./CategoryItem"
 export function CategoryList() {
   const { userId } = useLoginUser()
   const { data, fetchMore, loading, error } = useCategoriesListQuery({
-    variables: { userId: userId, enable: true, limit: 30 },
+    variables: { userId: userId, enable: true, limit: 20 },
   })
   const [deleteCategory] = useDeleteCategoryMutation()
   const { openWarningSnackbar } = useWarningSnackbar()
@@ -44,26 +44,9 @@ export function CategoryList() {
     .filter((node) => node.enable) // TODO: QueryでもEnable: trueしているので消したい
 
   const handleMoreFetch = async () => {
-    // TODO: The updateQuery callback for fetchMore is deprecated, and will be removed in the next major version of Apollo Client.
     return await fetchMore<CategoriesListQuery, CategoriesListQueryVariables>({
       variables: {
         cursor: pageInfo.endCursor,
-      },
-      updateQuery: (
-        previousQueryResult,
-        { fetchMoreResult },
-      ): CategoriesListQuery => {
-        if (!fetchMoreResult) return previousQueryResult
-        return {
-          ...fetchMoreResult,
-          categories: {
-            ...fetchMoreResult.categories,
-            edges: [
-              ...previousQueryResult.categories.edges,
-              ...fetchMoreResult.categories.edges,
-            ],
-          },
-        }
       },
     })
   }
