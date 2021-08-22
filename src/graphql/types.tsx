@@ -406,12 +406,19 @@ export type CreatePaymentMutation = {
 export type ProductsQueryVariables = Exact<{
   userId: Scalars["ID"]
   productName?: Maybe<Scalars["String"]>
+  cursor?: Maybe<Scalars["String"]>
+  limit?: Maybe<Scalars["Int"]>
 }>
 
 export type ProductsQuery = {
   __typename?: "Query"
   products: {
     __typename?: "ProductConnection"
+    pageInfo: {
+      __typename?: "PageInfo"
+      endCursor: string
+      hasNextPage: boolean
+    }
     edges: Array<
       Maybe<{
         __typename?: "ProductEdge"
@@ -783,8 +790,20 @@ export type CreatePaymentMutationOptions = Apollo.BaseMutationOptions<
   CreatePaymentMutationVariables
 >
 export const ProductsDocument = gql`
-  query products($userId: ID!, $productName: String) {
-    products(input: { userId: $userId, productName: $productName }, page: {}) {
+  query products(
+    $userId: ID!
+    $productName: String
+    $cursor: String
+    $limit: Int
+  ) {
+    products(
+      input: { userId: $userId, productName: $productName }
+      page: { first: $limit, after: $cursor }
+    ) {
+      pageInfo {
+        endCursor
+        hasNextPage
+      }
       edges {
         cursor
         node {
@@ -810,6 +829,8 @@ export const ProductsDocument = gql`
  *   variables: {
  *      userId: // value for 'userId'
  *      productName: // value for 'productName'
+ *      cursor: // value for 'cursor'
+ *      limit: // value for 'limit'
  *   },
  * });
  */
