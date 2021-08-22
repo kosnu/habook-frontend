@@ -23,7 +23,7 @@ import { CategoryItem } from "./CategoryItem"
 export function CategoryList() {
   const { userId } = useLoginUser()
   const { data, fetchMore, loading, error } = useCategoriesListQuery({
-    variables: { userId: userId, enable: true, limit: 20 },
+    variables: { userId: userId, enable: true, limit: 30 },
   })
   const [deleteCategory] = useDeleteCategoryMutation()
   const { openWarningSnackbar } = useWarningSnackbar()
