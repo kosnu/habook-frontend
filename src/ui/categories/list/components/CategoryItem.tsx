@@ -8,15 +8,12 @@ import {
 } from "@material-ui/core"
 import { MoreVert as MoreVertIcon } from "@material-ui/icons"
 import React, { useCallback } from "react"
-import {
-  CategoryFragment,
-  CategoryListItemFragment,
-} from "../../../../graphql/types"
+import { Categories_CategoryFragment } from "../../../../graphql/types"
 import { useAnchorElement } from "../hooks/useAnchorElement"
 
 interface CategoryItemProps {
-  category: CategoryListItemFragment
-  onDeleteClick: (category: CategoryFragment) => void
+  category: Categories_CategoryFragment
+  onDeleteClick: (category: Categories_CategoryFragment) => void
 }
 
 export function CategoryItem({ category, onDeleteClick }: CategoryItemProps) {

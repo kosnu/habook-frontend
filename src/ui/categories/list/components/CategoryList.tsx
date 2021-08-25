@@ -2,9 +2,9 @@ import { List, Typography } from "@material-ui/core"
 import React from "react"
 import InfiniteScroll from "react-infinite-scroll-component"
 import {
+  Categories_CategoryFragment,
   CategoriesListQuery,
   CategoriesListQueryVariables,
-  CategoryFragment,
   useCategoriesListQuery,
   useDeleteCategoryMutation,
 } from "../../../../graphql/types"
@@ -51,7 +51,7 @@ export function CategoryList() {
     })
   }
 
-  const handleDeleteClick = async (category: CategoryFragment) => {
+  const handleDeleteClick = async (category: Categories_CategoryFragment) => {
     try {
       await deleteCategory({
         variables: { id: category.id, userId: userId },
