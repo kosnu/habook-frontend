@@ -8,6 +8,10 @@ export const cache = new InMemoryCache({
           keyArgs: false,
           merge,
         },
+        products: {
+          keyArgs: false,
+          merge,
+        },
       },
     },
   },
