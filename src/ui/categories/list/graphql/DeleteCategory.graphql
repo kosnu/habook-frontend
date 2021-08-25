@@ -1,15 +1,13 @@
-fragment Category on Category {
-    __typename
-    id
-    name
-    enable
-}
-
 mutation deleteCategory(
     $id: ID!
     $userId: ID!
 ) {
-    deleteCategory(input: {id: $id, userId: $userId}) {
-        ...Category
+    deleteCategory(
+        input: {
+            id: $id,
+            userId: $userId
+        }
+    ) {
+        ...Categories_Category
     }
 }
