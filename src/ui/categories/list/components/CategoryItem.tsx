@@ -10,6 +10,7 @@ import { MoreVert as MoreVertIcon } from "@material-ui/icons"
 import React, { useCallback } from "react"
 import { Categories_CategoryFragment } from "../../../../graphql/types"
 import { useAnchorElement } from "../hooks/useAnchorElement"
+import { useCategoryFormModal } from "../hooks/useCategoryFormModal"
 
 interface CategoryItemProps {
   category: Categories_CategoryFragment
@@ -18,6 +19,12 @@ interface CategoryItemProps {
 
 export function CategoryItem({ category, onDeleteClick }: CategoryItemProps) {
   const { anchorEl, openMenu, closeMenu } = useAnchorElement()
+  const { openModal } = useCategoryFormModal()
+
+  const handleEditClick = useCallback(() => {
+    openModal()
+    closeMenu()
+  }, [openModal, closeMenu])
 
   const handleDeleteClick = useCallback(() => {
     onDeleteClick(category)
@@ -45,7 +52,7 @@ export function CategoryItem({ category, onDeleteClick }: CategoryItemProps) {
         open={Boolean(anchorEl)}
         onClose={closeMenu}
       >
-        <MenuItem onClick={closeMenu}>編集</MenuItem>
+        <MenuItem onClick={handleEditClick}>編集</MenuItem>
         <MenuItem style={{ color: "red" }} onClick={handleDeleteClick}>
           削除
         </MenuItem>

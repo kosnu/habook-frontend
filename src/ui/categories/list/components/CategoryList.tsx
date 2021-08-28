@@ -18,6 +18,7 @@ import {
   WarningSnackBar,
 } from "../../../common/components/WarningSnackBar"
 import { useLoginUser } from "../../../common/hooks/useLoginUser"
+import { CategoryFormModal } from "./CategoryFormModal"
 import { CategoryItem } from "./CategoryItem"
 
 export function CategoryList() {
@@ -85,6 +86,7 @@ export function CategoryList() {
       <SuccessSnackBar />
       <WarningSnackBar />
       <LoadingCircular loading={loading} />
+      <CategoryFormModal />
     </>
   )
 }
