@@ -18,6 +18,7 @@ import { useWarningSnackbar } from "../../../common/components/WarningSnackBar"
 import { useLoginUser } from "../../../common/hooks/useLoginUser"
 import { useAnchorElement } from "../hooks/useAnchorElement"
 import { useCategoryFormModal } from "../hooks/useCategoryFormModal"
+import { useCategoryNameForm } from "../hooks/useCategoryNameForm"
 
 interface CategoryItemProps {
   category: Categories_CategoryFragment
@@ -28,13 +29,15 @@ export function CategoryItem({ category }: CategoryItemProps) {
   const { anchorEl, openMenu, closeMenu } = useAnchorElement()
   const { openModal } = useCategoryFormModal()
   const [deleteCategory] = useDeleteCategoryMutation()
+  const { changeCategoryName } = useCategoryNameForm()
   const { openWarningSnackbar } = useWarningSnackbar()
   const { openSuccessSnackbar } = useSuccessSnackbar()
 
   const handleEditButtonClick = useCallback(() => {
     openModal()
+    changeCategoryName(category.name)
     closeMenu()
-  }, [openModal, closeMenu])
+  }, [category, openModal, changeCategoryName, closeMenu])
 
   const handleDeleteButtonClick = useCallback(async () => {
     try {

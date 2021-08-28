@@ -4,38 +4,43 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  Grid,
-  IconButton,
-  Typography,
 } from "@material-ui/core"
-import { Close as CloseIcon } from "@material-ui/icons"
-import React from "react"
+import React, { useCallback } from "react"
 import { useCategoryFormModal } from "../hooks/useCategoryFormModal"
+import { useCategoryNameForm } from "../hooks/useCategoryNameForm"
+import { CategoryNameForm } from "./CategoryNameForm"
 
 export function CategoryFormModal() {
   const { open, closeModal } = useCategoryFormModal()
+  const { validation, resetCategoryName } = useCategoryNameForm()
+
+  const handleClose = useCallback(() => {
+    resetCategoryName()
+    closeModal()
+  }, [resetCategoryName, closeModal])
 
   return (
     <>
-      <Dialog onClose={closeModal} open={open}>
-        <DialogTitle>
-          <Grid container justify={"space-between"}>
-            <Grid item alignItems={"center"} style={{ display: "flex" }}>
-              <Typography variant="h6">カテゴリー編集</Typography>
-            </Grid>
-            <Grid item>
-              <IconButton aria-label="close" onClick={closeModal}>
-                <CloseIcon />
-              </IconButton>
-            </Grid>
-          </Grid>
-        </DialogTitle>
-        <DialogContent dividers>
-          <Typography>Form</Typography>
-          {/* TODO: Form */}
+      <Dialog
+        onClose={handleClose}
+        open={open}
+        maxWidth={"md"}
+        PaperProps={{ style: { width: "640px", height: "240px" } }}
+      >
+        <DialogTitle>カテゴリーの編集</DialogTitle>
+        <DialogContent>
+          <CategoryNameForm />
         </DialogContent>
         <DialogActions>
-          <Button onClick={closeModal} color="primary">
+          <Button onClick={handleClose} color={"primary"}>
+            キャンセル
+          </Button>
+          <Button
+            color={"primary"}
+            variant={"contained"}
+            disabled={validation.isError}
+            onClick={handleClose}
+          >
             カテゴリーを更新する
           </Button>
         </DialogActions>
