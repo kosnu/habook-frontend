@@ -2,21 +2,13 @@ import { List, Typography } from "@material-ui/core"
 import React from "react"
 import InfiniteScroll from "react-infinite-scroll-component"
 import {
-  Categories_CategoryFragment,
   CategoriesListQuery,
   CategoriesListQueryVariables,
   useCategoriesListQuery,
-  useDeleteCategoryMutation,
 } from "../../../../graphql/types"
 import { LoadingCircular } from "../../../common/components/LoadingCircular"
-import {
-  SuccessSnackBar,
-  useSuccessSnackbar,
-} from "../../../common/components/SuccessSnackBar"
-import {
-  useWarningSnackbar,
-  WarningSnackBar,
-} from "../../../common/components/WarningSnackBar"
+import { SuccessSnackBar } from "../../../common/components/SuccessSnackBar"
+import { WarningSnackBar } from "../../../common/components/WarningSnackBar"
 import { useLoginUser } from "../../../common/hooks/useLoginUser"
 import { CategoryFormModal } from "./CategoryFormModal"
 import { CategoryItem } from "./CategoryItem"
@@ -26,9 +18,6 @@ export function CategoryList() {
   const { data, fetchMore, loading, error } = useCategoriesListQuery({
     variables: { userId: userId, enable: true, limit: 30 },
   })
-  const [deleteCategory] = useDeleteCategoryMutation()
-  const { openWarningSnackbar } = useWarningSnackbar()
-  const { openSuccessSnackbar } = useSuccessSnackbar()
 
   // TODO: データがないときの画面表示を実装する
   if (data === undefined && !loading) return <Typography>Error</Typography>
@@ -52,17 +41,6 @@ export function CategoryList() {
     })
   }
 
-  const handleDeleteClick = async (category: Categories_CategoryFragment) => {
-    try {
-      await deleteCategory({
-        variables: { id: category.id, userId: userId },
-      })
-      openSuccessSnackbar("カテゴリーを削除しました")
-    } catch (e) {
-      openWarningSnackbar(e.message)
-    }
-  }
-
   return (
     <>
       <List>
@@ -73,13 +51,7 @@ export function CategoryList() {
           loader={<LoadingCircular loading={loading} />}
         >
           {categories.map((category, index) => {
-            return (
-              <CategoryItem
-                key={index}
-                category={category}
-                onDeleteClick={handleDeleteClick}
-              />
-            )
+            return <CategoryItem key={index} category={category} />
           })}
         </InfiniteScroll>
       </List>
