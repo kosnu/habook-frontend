@@ -57,7 +57,7 @@ export function CategoryItem({ category }: CategoryItemProps) {
 
   return (
     <>
-      <ListItem>
+      <ListItem button>
         <ListItemText primary={category.name} />
         <ListItemSecondaryAction>
           <IconButton
