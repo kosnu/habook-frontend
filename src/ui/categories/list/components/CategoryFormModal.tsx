@@ -6,18 +6,25 @@ import {
   DialogTitle,
 } from "@material-ui/core"
 import React, { useCallback } from "react"
+import { useCategory } from "../hooks/useCategory"
 import { useCategoryFormModal } from "../hooks/useCategoryFormModal"
 import { useCategoryNameForm } from "../hooks/useCategoryNameForm"
 import { CategoryNameForm } from "./CategoryNameForm"
 
 export function CategoryFormModal() {
   const { open, closeModal } = useCategoryFormModal()
+  const { updateCategory } = useCategory()
   const { validation, resetCategoryName } = useCategoryNameForm()
 
   const handleClose = useCallback(() => {
     resetCategoryName()
     closeModal()
   }, [resetCategoryName, closeModal])
+
+  const handleUpdateButtonClick = useCallback(async () => {
+    await updateCategory()
+    closeModal()
+  }, [updateCategory, closeModal])
 
   return (
     <>
@@ -39,7 +46,7 @@ export function CategoryFormModal() {
             color={"primary"}
             variant={"contained"}
             disabled={validation.isError}
-            onClick={handleClose}
+            onClick={handleUpdateButtonClick}
           >
             カテゴリーを更新する
           </Button>
