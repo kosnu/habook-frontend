@@ -41,7 +41,7 @@ export function CategoryList() {
     .map((edge) => edge.node)
     .filter((node) => node.enable) // TODO: QueryでもEnable: trueしているので消したい
 
-  const handleMoreFetch = async () => {
+  async function handleMoreFetch() {
     return await fetchMore<CategoriesListQuery, CategoriesListQueryVariables>({
       variables: {
         cursor: pageInfo.endCursor,
@@ -49,24 +49,24 @@ export function CategoryList() {
     })
   }
 
-  const handleMenuButtonClick = (
+  function handleMenuButtonClick(
     event: React.MouseEvent<HTMLButtonElement>,
     category: Categories_CategoryFragment,
-  ) => {
+  ) {
     openMenu(event)
     selectCategory(category)
   }
 
-  const handleMenuClose = () => {
+  function handleMenuClose() {
     closeMenu()
   }
 
-  const handleEditButtonClick = () => {
+  function handleEditButtonClick() {
     openModal()
     closeMenu()
   }
 
-  const handleDeleteButtonClick = async () => {
+  async function handleDeleteButtonClick() {
     await deleteCategory()
   }
 
