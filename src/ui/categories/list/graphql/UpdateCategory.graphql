@@ -1,11 +1,13 @@
-mutation deleteCategory(
+mutation updateCategory(
     $id: ID!
     $userId: ID!
+    $name: String!
 ) {
-    deleteCategory(
+    updateCategory(
         input: {
             id: $id,
-            userId: $userId
+            userId: $userId,
+            name: $name
         }
     ) {
         ...Categories_Category

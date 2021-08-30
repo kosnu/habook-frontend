@@ -2,32 +2,30 @@ import { List, Typography } from "@material-ui/core"
 import React from "react"
 import InfiniteScroll from "react-infinite-scroll-component"
 import {
+  Categories_CategoryFragment,
   CategoriesListQuery,
   CategoriesListQueryVariables,
-  CategoryFragment,
   useCategoriesListQuery,
-  useDeleteCategoryMutation,
 } from "../../../../graphql/types"
 import { LoadingCircular } from "../../../common/components/LoadingCircular"
-import {
-  SuccessSnackBar,
-  useSuccessSnackbar,
-} from "../../../common/components/SuccessSnackBar"
-import {
-  useWarningSnackbar,
-  WarningSnackBar,
-} from "../../../common/components/WarningSnackBar"
+import { SuccessSnackBar } from "../../../common/components/SuccessSnackBar"
+import { WarningSnackBar } from "../../../common/components/WarningSnackBar"
 import { useLoginUser } from "../../../common/hooks/useLoginUser"
+import { useAnchorElement } from "../hooks/useAnchorElement"
+import { useCategory } from "../hooks/useCategory"
+import { useCategoryFormModal } from "../hooks/useCategoryFormModal"
+import { CategoryFormModal } from "./CategoryFormModal"
 import { CategoryItem } from "./CategoryItem"
+import { CategoryOperationMenu } from "./CategoryOperationMenu"
 
 export function CategoryList() {
   const { userId } = useLoginUser()
+  const { anchorEl, openMenu, closeMenu } = useAnchorElement()
+  const { openModal } = useCategoryFormModal()
+  const { selectCategory, deleteCategory } = useCategory()
   const { data, fetchMore, loading, error } = useCategoriesListQuery({
     variables: { userId: userId, enable: true, limit: 30 },
   })
-  const [deleteCategory] = useDeleteCategoryMutation()
-  const { openWarningSnackbar } = useWarningSnackbar()
-  const { openSuccessSnackbar } = useSuccessSnackbar()
 
   // TODO: データがないときの画面表示を実装する
   if (data === undefined && !loading) return <Typography>Error</Typography>
@@ -43,7 +41,7 @@ export function CategoryList() {
     .map((edge) => edge.node)
     .filter((node) => node.enable) // TODO: QueryでもEnable: trueしているので消したい
 
-  const handleMoreFetch = async () => {
+  async function handleMoreFetch() {
     return await fetchMore<CategoriesListQuery, CategoriesListQueryVariables>({
       variables: {
         cursor: pageInfo.endCursor,
@@ -51,15 +49,25 @@ export function CategoryList() {
     })
   }
 
-  const handleDeleteClick = async (category: CategoryFragment) => {
-    try {
-      await deleteCategory({
-        variables: { id: category.id, userId: userId },
-      })
-      openSuccessSnackbar("カテゴリーを削除しました")
-    } catch (e) {
-      openWarningSnackbar(e.message)
-    }
+  function handleMenuButtonClick(
+    event: React.MouseEvent<HTMLButtonElement>,
+    category: Categories_CategoryFragment,
+  ) {
+    openMenu(event)
+    selectCategory(category)
+  }
+
+  function handleMenuClose() {
+    closeMenu()
+  }
+
+  function handleEditButtonClick() {
+    openModal()
+    closeMenu()
+  }
+
+  async function handleDeleteButtonClick() {
+    await deleteCategory()
   }
 
   return (
@@ -76,7 +84,7 @@ export function CategoryList() {
               <CategoryItem
                 key={index}
                 category={category}
-                onDeleteClick={handleDeleteClick}
+                onMenuButtonClick={handleMenuButtonClick}
               />
             )
           })}
@@ -85,6 +93,13 @@ export function CategoryList() {
       <SuccessSnackBar />
       <WarningSnackBar />
       <LoadingCircular loading={loading} />
+      <CategoryFormModal />
+      <CategoryOperationMenu
+        anchorElement={anchorEl}
+        onMenuClose={handleMenuClose}
+        onEditButtonClick={handleEditButtonClick}
+        onDeleteButtonClick={handleDeleteButtonClick}
+      />
     </>
   )
 }

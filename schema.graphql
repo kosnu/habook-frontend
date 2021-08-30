@@ -64,6 +64,7 @@ type Mutation {
     createPayment(input: NewPayment!): Payment!
     createUser(input: NewUser!): User!
     deleteCategory(input: DeleteCategory!): Category!
+    updateCategory(input: UpdateCategory!): Category!
 }
 
 type PageInfo {
@@ -186,5 +187,11 @@ input SearchPayments {
 
 input SearchProduct {
     productName: String
+    userId: ID!
+}
+
+input UpdateCategory {
+    id: ID!
+    name: String!
     userId: ID!
 }
