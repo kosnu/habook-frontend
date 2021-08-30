@@ -3,38 +3,29 @@ import {
   ListItem,
   ListItemSecondaryAction,
   ListItemText,
-  Menu,
-  MenuItem,
-  Typography,
 } from "@material-ui/core"
 import { MoreVert as MoreVertIcon } from "@material-ui/icons"
 import React, { useCallback } from "react"
 import { Categories_CategoryFragment } from "../../../../graphql/types"
-import { useAnchorElement } from "../hooks/useAnchorElement"
-import { useCategory } from "../hooks/useCategory"
-import { useCategoryFormModal } from "../hooks/useCategoryFormModal"
 
 interface CategoryItemProps {
   category: Categories_CategoryFragment
+  onMenuButtonClick: (
+    event: React.MouseEvent<HTMLButtonElement>,
+    category: Categories_CategoryFragment,
+  ) => void
 }
 
-export function CategoryItem({ category }: CategoryItemProps) {
-  const { anchorEl, openMenu, closeMenu } = useAnchorElement()
-  const { openModal } = useCategoryFormModal()
-  const { selectCategory, deleteCategory } = useCategory()
-
+export function CategoryItem({
+  category,
+  onMenuButtonClick,
+}: CategoryItemProps) {
   const handleMenuButtonClick = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
-      openMenu(event)
-      selectCategory(category)
+      onMenuButtonClick(event, category)
     },
-    [category, openMenu, selectCategory],
+    [category, onMenuButtonClick],
   )
-
-  const handleEditButtonClick = useCallback(() => {
-    openModal()
-    closeMenu()
-  }, [openModal, closeMenu])
 
   return (
     <>
@@ -50,20 +41,6 @@ export function CategoryItem({ category }: CategoryItemProps) {
           </IconButton>
         </ListItemSecondaryAction>
       </ListItem>
-      <Menu
-        id={`category-item-menu`}
-        anchorEl={anchorEl}
-        keepMounted
-        open={Boolean(anchorEl)}
-        onClose={closeMenu}
-      >
-        <MenuItem onClick={handleEditButtonClick}>
-          <Typography>編集</Typography>
-        </MenuItem>
-        <MenuItem onClick={deleteCategory}>
-          <Typography color={"error"}>削除</Typography>
-        </MenuItem>
-      </Menu>
     </>
   )
 }

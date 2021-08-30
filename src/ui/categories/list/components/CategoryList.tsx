@@ -2,6 +2,7 @@ import { List, Typography } from "@material-ui/core"
 import React from "react"
 import InfiniteScroll from "react-infinite-scroll-component"
 import {
+  Categories_CategoryFragment,
   CategoriesListQuery,
   CategoriesListQueryVariables,
   useCategoriesListQuery,
@@ -10,11 +11,18 @@ import { LoadingCircular } from "../../../common/components/LoadingCircular"
 import { SuccessSnackBar } from "../../../common/components/SuccessSnackBar"
 import { WarningSnackBar } from "../../../common/components/WarningSnackBar"
 import { useLoginUser } from "../../../common/hooks/useLoginUser"
+import { useAnchorElement } from "../hooks/useAnchorElement"
+import { useCategory } from "../hooks/useCategory"
+import { useCategoryFormModal } from "../hooks/useCategoryFormModal"
 import { CategoryFormModal } from "./CategoryFormModal"
 import { CategoryItem } from "./CategoryItem"
+import { CategoryOperationMenu } from "./CategoryOperationMenu"
 
 export function CategoryList() {
   const { userId } = useLoginUser()
+  const { anchorEl, openMenu, closeMenu } = useAnchorElement()
+  const { openModal } = useCategoryFormModal()
+  const { selectCategory, deleteCategory } = useCategory()
   const { data, fetchMore, loading, error } = useCategoriesListQuery({
     variables: { userId: userId, enable: true, limit: 30 },
   })
@@ -41,6 +49,27 @@ export function CategoryList() {
     })
   }
 
+  const handleMenuButtonClick = (
+    event: React.MouseEvent<HTMLButtonElement>,
+    category: Categories_CategoryFragment,
+  ) => {
+    openMenu(event)
+    selectCategory(category)
+  }
+
+  const handleMenuClose = () => {
+    closeMenu()
+  }
+
+  const handleEditButtonClick = () => {
+    openModal()
+    closeMenu()
+  }
+
+  const handleDeleteButtonClick = async () => {
+    await deleteCategory()
+  }
+
   return (
     <>
       <List>
@@ -51,7 +80,13 @@ export function CategoryList() {
           loader={<LoadingCircular loading={loading} />}
         >
           {categories.map((category, index) => {
-            return <CategoryItem key={index} category={category} />
+            return (
+              <CategoryItem
+                key={index}
+                category={category}
+                onMenuButtonClick={handleMenuButtonClick}
+              />
+            )
           })}
         </InfiniteScroll>
       </List>
@@ -59,6 +94,12 @@ export function CategoryList() {
       <WarningSnackBar />
       <LoadingCircular loading={loading} />
       <CategoryFormModal />
+      <CategoryOperationMenu
+        anchorElement={anchorEl}
+        onMenuClose={handleMenuClose}
+        onEditButtonClick={handleEditButtonClick}
+        onDeleteButtonClick={handleDeleteButtonClick}
+      />
     </>
   )
 }
