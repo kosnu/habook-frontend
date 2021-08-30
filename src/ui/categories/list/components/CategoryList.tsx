@@ -68,6 +68,7 @@ export function CategoryList() {
 
   async function handleDeleteButtonClick() {
     await deleteCategory()
+    closeMenu()
   }
 
   return (
