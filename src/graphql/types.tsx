@@ -1,5 +1,5 @@
-import { gql } from "@apollo/client"
 import * as Apollo from "@apollo/client"
+import { gql } from "@apollo/client"
 
 export type Maybe<T> = T | null
 export type Exact<T extends { [key: string]: unknown }> = {
@@ -371,6 +371,49 @@ export type CreateCategoryMutation = {
   createCategory: { __typename?: "Category"; id: string; name: string }
 }
 
+export type Payments_CategoryFragmentFragment = {
+  __typename: "Category"
+  id: string
+  name: string
+}
+
+export type Payments_ProductFragmentFragment = {
+  __typename: "Product"
+  id: string
+  name: string
+}
+
+export type Payments_PaymentFragmentFragment = {
+  __typename: "Payment"
+  id: string
+  paidOn: string
+  taxIncluded: boolean
+  amount: number
+  numberOfProduct: number
+  category: { __typename: "Category"; id: string; name: string }
+  product: { __typename: "Product"; id: string; name: string }
+}
+
+export type Unnamed_1_QueryVariables = Exact<{
+  userId: Scalars["ID"]
+  categoryId?: Maybe<Scalars["ID"]>
+  productName?: Maybe<Scalars["String"]>
+}>
+
+export type Unnamed_1_Query = {
+  __typename?: "Query"
+  payments: Array<{
+    __typename: "Payment"
+    id: string
+    paidOn: string
+    taxIncluded: boolean
+    amount: number
+    numberOfProduct: number
+    category: { __typename: "Category"; id: string; name: string }
+    product: { __typename: "Product"; id: string; name: string }
+  }>
+}
+
 export type CategoriesQueryVariables = Exact<{
   userId: Scalars["ID"]
   enable?: Maybe<Scalars["Boolean"]>
@@ -458,7 +501,38 @@ export const Categories_CategoryFragmentDoc = gql`
     enable
   }
 `
-
+export const Payments_CategoryFragmentFragmentDoc = gql`
+  fragment Payments_CategoryFragment on Category {
+    __typename
+    id
+    name
+  }
+`
+export const Payments_ProductFragmentFragmentDoc = gql`
+  fragment Payments_ProductFragment on Product {
+    __typename
+    id
+    name
+  }
+`
+export const Payments_PaymentFragmentFragmentDoc = gql`
+  fragment Payments_PaymentFragment on Payment {
+    __typename
+    id
+    category {
+      ...Payments_CategoryFragment
+    }
+    product {
+      ...Payments_ProductFragment
+    }
+    paidOn
+    taxIncluded
+    amount
+    numberOfProduct
+  }
+  ${Payments_CategoryFragmentFragmentDoc}
+  ${Payments_ProductFragmentFragmentDoc}
+`
 export const CategoriesListDocument = gql`
   query categoriesList(
     $userId: ID!
@@ -699,6 +773,56 @@ export type CreateCategoryMutationOptions = Apollo.BaseMutationOptions<
   CreateCategoryMutation,
   CreateCategoryMutationVariables
 >
+export const Document = gql`
+  query ($userId: ID!, $categoryId: ID, $productName: String) {
+    payments(
+      input: {
+        userId: $userId
+        categoryId: $categoryId
+        productName: $productName
+      }
+    ) {
+      ...Payments_PaymentFragment
+    }
+  }
+  ${Payments_PaymentFragmentFragmentDoc}
+`
+
+/**
+ * __useQuery__
+ *
+ * To run a query within a React component, call `useQuery` and pass it any options that fit your needs.
+ * When your component renders, `useQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useQuery({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *      categoryId: // value for 'categoryId'
+ *      productName: // value for 'productName'
+ *   },
+ * });
+ */
+export function useQuery(
+  baseOptions: Apollo.QueryHookOptions<Query, QueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<Query, QueryVariables>(Document, options)
+}
+
+export function useLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<Query, QueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<Query, QueryVariables>(Document, options)
+}
+
+export type QueryHookResult = ReturnType<typeof useQuery>
+export type LazyQueryHookResult = ReturnType<typeof useLazyQuery>
+export type QueryResult = Apollo.QueryResult<Query, QueryVariables>
 export const CategoriesDocument = gql`
   query categories(
     $userId: ID!
