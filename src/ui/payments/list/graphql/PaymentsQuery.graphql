@@ -25,10 +25,12 @@ fragment Payments_PaymentFragment on Payment {
     numberOfProduct
 }
 
-query (
+query paymentsQuery(
     $userId: ID!
     $categoryId: ID
     $productName: String
+    $cursor: String,
+    $limit: Int
 ) {
     payments(
         input: {
@@ -36,7 +38,19 @@ query (
             categoryId: $categoryId,
             productName: $productName
         }
+        page: {
+            first: $limit,
+            after: $cursor
+        }
     ) {
-        ...Payments_PaymentFragment
+        pageInfo {
+            endCursor
+            hasNextPage
+        }
+        edges {
+            node {
+                ...Payments_PaymentFragment
+            }
+        }
     }
 }
