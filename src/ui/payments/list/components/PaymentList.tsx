@@ -23,6 +23,8 @@ export function PaymentList() {
   const payments = data.payments.edges
     .filter((value): value is NonNullable<typeof value> => !!value)
     .map((edge) => edge.node)
+
+  // TODO: ページネーションをできるようにする
   return (
     <List>
       {payments.map((payment, index) => {

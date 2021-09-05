@@ -12,6 +12,8 @@ interface PaymentItemProps {
   payment: Payments_PaymentFragmentFragment
 }
 
+// TODO: 支払日やカテゴリー、値段などの情報を表示できるようにする
+// TODO: 支払いに対するアクションを追加する
 export function PaymentItem({ payment }: PaymentItemProps) {
   return (
     <>
