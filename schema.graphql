@@ -72,7 +72,7 @@ type PageInfo {
     hasNextPage: Boolean!
 }
 
-type Payment {
+type Payment implements Node {
     amount: Int!
     category: Category!
     createdAt: String!
@@ -84,6 +84,16 @@ type Payment {
     taxIncluded: Boolean!
     updatedAt: String!
     user: User!
+}
+
+type PaymentConnection implements Connection {
+    edges: [PaymentEdge]!
+    pageInfo: PageInfo!
+}
+
+type PaymentEdge implements Edge {
+    cursor: String!
+    node: Payment!
 }
 
 type Product implements Node {
@@ -112,7 +122,7 @@ type Query {
     incomeHistories(input: SearchIncomeHistory): [IncomeHistory!]!
     incomeHistory(id: ID!): IncomeHistory
     payment(id: ID!): Payment
-    payments(input: SearchPayments): [Payment!]!
+    payments(input: SearchPayments, page: PaginationInput!): PaymentConnection!
     product(id: ID!): Product
     products(input: SearchProduct, page: PaginationInput!): ProductConnection!
     user(id: ID!): User
